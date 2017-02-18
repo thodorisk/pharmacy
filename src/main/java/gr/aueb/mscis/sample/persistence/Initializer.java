@@ -6,6 +6,9 @@ import javax.persistence.Query;
 
 import gr.aueb.mscis.sample.model.Category;
 import gr.aueb.mscis.sample.model.Product;
+import gr.aueb.mscis.sample.model.Account;
+import gr.aueb.mscis.sample.model.Pharmacist;
+import gr.aueb.mscis.sample.model.Order;
 
 
 public class Initializer  {
@@ -26,6 +29,15 @@ public class Initializer  {
         query.executeUpdate();
         
         query = em.createNativeQuery("delete from categories");
+        query.executeUpdate();
+
+        query = em.createNativeQuery("delete from accounts");
+        query.executeUpdate();
+
+        query = em.createNativeQuery("delete from pharmacists");
+        query.executeUpdate();
+
+        query = em.createNativeQuery("delete from orders");
         query.executeUpdate();
         
         query = em.createNativeQuery("ALTER SEQUENCE hibernate_sequence RESTART WITH 1");

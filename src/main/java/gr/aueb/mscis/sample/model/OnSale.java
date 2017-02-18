@@ -1,0 +1,95 @@
+package gr.aueb.mscis.sample.model;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import javax.persistence.*;
+
+/**
+ * Created by thodoriskaragiannis on 18/02/2017.
+ */
+
+@Entity
+@Table(name = "sales")
+public class OnSale {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
+    @Column(name = "discount", nullable = false)
+    private Double discount;
+
+    @Column(name = "starts", nullable = false)
+    private String startdate;
+
+    @Column(name = "ends", nullable = false)
+    private String enddate;
+
+
+    public OnSale() {
+    }
+
+    public OnSale(Double discount, String startdate, String enddate) {
+        super();
+        this.discount = discount;
+        this.startdate = startdate;
+        this.enddate = enddate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
+    }
+
+    public String getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(String startdate) {
+        this.startdate = startdate;
+    }
+
+    public String getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(String enddate) {
+        this.enddate = enddate;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (obj.getClass() != getClass())
+            return false;
+        OnSale other = (OnSale) obj;
+        return new EqualsBuilder()
+                .append(discount, other.discount)
+                .append(startdate, other.startdate)
+                .append(enddate, other.enddate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(discount)
+                .append(startdate)
+                .append(enddate)
+                .toHashCode();
+    }
+}

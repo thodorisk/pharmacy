@@ -23,18 +23,18 @@ public class Product {
 	@Column(name = "eofn", nullable = false)
 	private int eofn;
 
-	@Column(name = "lotn", length = 100, nullable = false)
-	private String lotn;
+	@Column(name = "price", nullable = false)
+	private Double price;
 	
 	
 	public Product() {
 	}
 
-	public Product(String name, int eofn, String lotn) {
+	public Product(String name, int eofn, Double price) {
 		super();
 		this.name = name;
 		this.eofn = eofn;
-		this.lotn = lotn;
+		this.price = price;
 	}
 
 	public int getId() {
@@ -61,12 +61,12 @@ public class Product {
 		this.eofn = eofn;
 	}
 
-	public String getLotn() {
-		return lotn;
+	public Double getPrice() {
+		return price;
 	}
 
-	public void setLotn(String lotn) {
-		this.lotn = lotn;
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class Product {
 		return new EqualsBuilder()
 				.append(name, other.name)
 				.append(eofn, other.eofn)
-				.append(lotn, other.lotn)
+				.append(price, other.price)
 				.isEquals();
 	}
 
@@ -89,13 +89,13 @@ public class Product {
 	public int hashCode() {
 		return new HashCodeBuilder().append(name)
 				.append(eofn)
-				.append(lotn)
+				.append(price)
 				.toHashCode();
 	}
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", eofn=" + eofn + ", lotn=" + lotn + "]";
+		return "Product [id=" + id + ", name=" + name + ", eofn=" + eofn + ", price=" + price + "]";
 	}
 
 	
