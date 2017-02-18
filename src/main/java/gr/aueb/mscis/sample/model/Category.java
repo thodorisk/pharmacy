@@ -6,8 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
 @Table(name = "categories")
@@ -52,15 +52,6 @@ public class Category {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -70,12 +61,15 @@ public class Category {
 			return false;
 		Category other = (Category) obj;
 		return new EqualsBuilder()
-				.appendSuper(super.equals(obj))
 				.append(description, other.description)
 				.append(price, other.price)
 				.isEquals();
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(description)
+				.append(price)
+				.toHashCode();
+	}
 }

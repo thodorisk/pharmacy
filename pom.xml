@@ -27,6 +27,13 @@
 			<version>5.2.2.Final</version>
 		</dependency>
 
+		<!-- EqualsBuilder -->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.4</version>
+		</dependency>
+
 		<!-- Η2 -->
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -51,13 +58,6 @@
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
 			<version>2.23.2</version>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.2</version>
 		</dependency>
 
 		<!-- JSON support -->

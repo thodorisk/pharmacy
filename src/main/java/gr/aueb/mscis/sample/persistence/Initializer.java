@@ -5,7 +5,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import gr.aueb.mscis.sample.model.Category;
-import gr.aueb.mscis.sample.model.Movie;
+import gr.aueb.mscis.sample.model.Product;
 
 
 public class Initializer  {
@@ -22,7 +22,7 @@ public class Initializer  {
         tx.begin();
         Query query = null;
 
-        query = em.createNativeQuery("delete from movies");
+        query = em.createNativeQuery("delete from products");
         query.executeUpdate();
         
         query = em.createNativeQuery("delete from categories");
@@ -33,31 +33,5 @@ public class Initializer  {
         
         tx.commit();
         
-    }
-    
-
-    public void prepareData() {
-
-        eraseData();                      
-
-        Product Depon = new Product("Depon", 000345678, "D999777");
-        Product Panadol = new Product("Panadol", 777888999, "P333444");
-        
-        Category cat = new Category();
-        Category cat2 = new Category();
-        cat.setDescription("Analgetic");
-        cat2.setDescription("Analgetic");
-       
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        
-        em.persist(depon);
-        em.persist(panadol);
-        em.persist(cat);
-        em.persist(cat2);
-        
-        tx.commit();
-    
     }
 }

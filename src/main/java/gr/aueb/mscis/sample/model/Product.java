@@ -6,8 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 @Entity
 @Table(name = "products")
@@ -49,7 +49,7 @@ public class Product {
 		return name;
 	}
 
-	public void setName(String title) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -79,11 +79,18 @@ public class Product {
 			return false;
 		Product other = (Product) obj;
 		return new EqualsBuilder()
-				.appendSuper(super.equals(obj))
 				.append(name, other.name)
 				.append(eofn, other.eofn)
 				.append(lotn, other.lotn)
 				.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(name)
+				.append(eofn)
+				.append(lotn)
+				.toHashCode();
 	}
 
 	@Override
