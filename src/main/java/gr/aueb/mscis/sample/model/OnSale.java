@@ -69,27 +69,4 @@ public class OnSale {
         this.enddate = enddate;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (obj.getClass() != getClass())
-            return false;
-        OnSale other = (OnSale) obj;
-        return new EqualsBuilder()
-                .append(discount, other.discount)
-                .append(startdate, other.startdate)
-                .append(enddate, other.enddate)
-                .isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(discount)
-                .append(startdate)
-                .append(enddate)
-                .toHashCode();
-    }
 }

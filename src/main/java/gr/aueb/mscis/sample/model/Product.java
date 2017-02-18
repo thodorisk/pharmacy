@@ -97,7 +97,4 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", eofn=" + eofn + ", price=" + price + "]";
 	}
-
-	
-	
 }
