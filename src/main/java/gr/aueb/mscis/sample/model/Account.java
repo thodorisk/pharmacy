@@ -31,7 +31,7 @@ public class Account {
     @Column(name="dateopened", nullable = false)
     String dateopened;
 
-    @OneToOne (mappedBy = "pharmacist")
+    @OneToOne (mappedBy = "account")
     private Pharmacist pharmacist;
 
     public Pharmacist getPharmacist() {

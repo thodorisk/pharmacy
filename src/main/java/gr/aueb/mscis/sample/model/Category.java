@@ -20,10 +20,7 @@ public class Category {
 	@Column(nullable = false, unique = true)
 	String description;
 
-	@Column(nullable = false, unique = true)
-	Double price;
 
-	
 	public Category() {
 	}
 		
@@ -43,13 +40,6 @@ public class Category {
 		this.description = description;
 	}
 
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -62,14 +52,12 @@ public class Category {
 		Category other = (Category) obj;
 		return new EqualsBuilder()
 				.append(description, other.description)
-				.append(price, other.price)
 				.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(description)
-				.append(price)
 				.toHashCode();
 	}
 }

@@ -23,7 +23,7 @@ public class OnSale {
     @Column(name = "ends", nullable = false)
     private String enddate;
 
-    @OneToOne (mappedBy = "product")
+    @OneToOne (mappedBy = "onSale")
     private Product product;
 
     public Product getProduct() {

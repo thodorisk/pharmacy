@@ -17,7 +17,7 @@ public class Cart {
     @Column (name = "cartdate")
     private String cartDate;
 
-    @OneToOne (mappedBy = "pharmacist")
+    @OneToOne (mappedBy = "cart")
     private Pharmacist pharmacist;
 
     public Pharmacist getPharmacist() {
