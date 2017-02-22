@@ -46,6 +46,16 @@ public class Account {
     public Account() {
     }
 
+    public Account(int id, String username,
+                      String password, Boolean isclosed, String dateopened) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.isclosed = isclosed;
+        this.dateopened = dateopened;
+
+    }
+
     public int getId() {
         return id;
     }

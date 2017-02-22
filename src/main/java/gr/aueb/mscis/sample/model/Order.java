@@ -40,8 +40,9 @@ public class Order {
     public Account getAccount(){return account;}
 
     @OneToMany (mappedBy = "order")
-    private Set <Line> lines = new HashSet<Line>();
-    public Set <Line> getLine() {return lines;}
+    private Set <LineItem> lineItems = new HashSet<LineItem>();
+    public Set <LineItem> getLineItems() {return lineItems;}
+    public void setLineItems (Set <LineItem> lineItems) {this.lineItems = lineItems;}
 
 
     public Order() {

@@ -26,8 +26,9 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(String name, int eofn, Double price) {
+	public Product(int id, String name, int eofn, Double price) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.eofn = eofn;
 		this.price = price;
