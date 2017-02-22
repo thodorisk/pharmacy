@@ -4,10 +4,13 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by thodoriskaragiannis on 18/02/2017.
  */
+
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -16,17 +19,28 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="username", nullable = false, unique = true)
     String username;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="password", nullable = false)
     String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="isclosed", nullable = false)
     Boolean isclosed;
 
-    @Column(nullable = false, unique = true)
+    @Column(name="dateopened", nullable = false)
     String dateopened;
+
+    @OneToOne (mappedBy = "pharmacist")
+    private Pharmacist pharmacist;
+
+    public Pharmacist getPharmacist() {
+        return pharmacist;
+    }
+
+    @OneToMany(mappedBy="account")
+    private Set<Order> orders = new HashSet<Order>();
+    public Set <Order> getOrders(){return orders;}
 
 
     public Account() {

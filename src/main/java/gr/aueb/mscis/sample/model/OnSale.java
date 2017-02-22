@@ -1,8 +1,5 @@
 package gr.aueb.mscis.sample.model;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import javax.persistence.*;
 
 /**
@@ -26,6 +23,12 @@ public class OnSale {
     @Column(name = "ends", nullable = false)
     private String enddate;
 
+    @OneToOne (mappedBy = "product")
+    private Product product;
+
+    public Product getProduct() {
+        return product;
+    }
 
     public OnSale() {
     }

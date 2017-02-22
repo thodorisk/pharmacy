@@ -4,6 +4,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by thodoriskaragiannis on 18/02/2017.
@@ -26,15 +28,32 @@ public class Order {
     @Column(name = "total", nullable = false)
     private Double total;
 
+    @Column(name = "lot", nullable = false)
+    private int lot;
+
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
+    @ManyToOne (cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.LAZY)
+    @JoinColumn (name="account_id")
+    private Account account;
+    public Account getAccount(){return account;}
+
+    @OneToMany (mappedBy = "order")
+    private Set <Line> lines = new HashSet<Line>();
+    public Set <Line> getLine() {return lines;}
+
 
     public Order() {
     }
 
-    public Order(String orderdate, OrderState status, Double total) {
+    public Order(String orderdate, OrderState status, Double total, int lot, int quantity) {
         super();
         this.orderdate = orderdate;
         this.status = status;
         this.total = total;
+        this.quantity = quantity;
+        this.lot = lot;
     }
 
     public int getId() {
@@ -69,6 +88,22 @@ public class Order {
         this.total = total;
     }
 
+    public int getLot() {
+        return lot;
+    }
+
+    public void setLot(int lot) {
+        this.lot = lot;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -82,6 +117,8 @@ public class Order {
                 .append(orderdate, other.orderdate)
                 .append(status, other.status)
                 .append(total, other.total)
+                .append(lot, other.lot)
+                .append(quantity, other.quantity)
                 .isEquals();
     }
 
@@ -90,6 +127,8 @@ public class Order {
         return new HashCodeBuilder().append(orderdate)
                 .append(status)
                 .append(total)
+                .append(lot)
+                .append(quantity)
                 .toHashCode();
     }
 }

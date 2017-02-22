@@ -1,11 +1,7 @@
 package gr.aueb.mscis.sample.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -67,6 +63,14 @@ public class Product {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	@OneToOne
+	@JoinColumn (name = "sale_id")
+	private OnSale onSale;
+
+	public OnSale getOnSale() {
+		return onSale;
 	}
 
 	@Override

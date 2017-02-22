@@ -8,19 +8,25 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 class Person {
-    @Column(name="firstname", length=50, nullable = false)
+    @Column(name="firstname")
     private String firstName;
-    @Column(name="lastname", length=50, nullable = false)
+    @Column(name="lastname")
     private String lastName;
-    @Column(name="email", length=50, nullable = false)
+    @Column(name="email", nullable = false)
     private String email;
+    @Column(name="phone")
+    private int phone;
+    @Column(name="vatNo")
+    private int vatNo;
 
     public Person() { }
 
-    Person (String firstName, String lastName, String email) {
+    Person (String firstName, String lastName, String email, int phone, int vatNo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.phone = phone;
+        this.vatNo = vatNo;
     }
 
     public void setFirstName(String firstName) {
@@ -45,6 +51,22 @@ class Person {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setVatNo(int VatNo) {
+        this.vatNo = vatNo;
+    }
+
+    public int getVatNo() {
+        return vatNo;
     }
 
 }

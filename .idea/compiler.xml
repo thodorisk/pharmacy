@@ -26,6 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="library" target="1.7" />
       <module name="sample" target="1.7" />
     </bytecodeTargetLevel>
   </component>

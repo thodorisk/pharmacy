@@ -42,9 +42,7 @@ public class Address {
         this.street = street;
     }
 
-    public String getStreet() {
-        return street;
-    }
+    public String getStreet() {return street;}
 
     public void setNumber(String number) {
         this.number = number;

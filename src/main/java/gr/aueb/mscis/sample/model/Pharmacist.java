@@ -3,14 +3,7 @@ package gr.aueb.mscis.sample.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import gr.aueb.mscis.sample.contacts.Address;
 
@@ -23,18 +16,32 @@ import gr.aueb.mscis.sample.contacts.Address;
 public class Pharmacist  {
 
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     @Column(name="pharmacistno")
     private int pharmacistNo;
 
     @Embedded
     private Address address;
 
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE},
-            mappedBy="pharmacist", fetch=FetchType.LAZY)
-    private Set<Order> orders = new HashSet<Order>();
-
     @Embedded
     private Person person = new Person();
+
+    @OneToOne
+    @JoinColumn (name="account_id", unique = true)
+
+    private Account account;
+
+    public Account getAccount() {
+        return account;
+    }
+
+    @OneToOne
+    @JoinColumn (name="cart_id")
+
+    private Cart cart;
+    public  Cart getCart(){
+        return cart;
+    }
 
     public Pharmacist() { }
 
@@ -89,7 +96,4 @@ public class Pharmacist  {
         return address == null ? null : new Address(address);
     }
 
-    public Set<Order> getOrders() {
-        return new HashSet<Order>(orders);
-    }
 }
