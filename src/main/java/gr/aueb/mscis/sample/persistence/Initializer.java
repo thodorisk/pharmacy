@@ -32,40 +32,45 @@ public class Initializer  {
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        Query query = null;
+        Query query;
 
-        query = em.createNativeQuery("delete from products");
+        query = em.createNativeQuery("DELETE FROM products");
         query.executeUpdate();
 
-        query = em.createNativeQuery("delete from categories");
+        query = em.createNativeQuery("DELETE FROM categories");
         query.executeUpdate();
 
-        query = em.createNativeQuery("delete from accounts");
+        query = em.createNativeQuery("DELETE FROM accounts");
         query.executeUpdate();
 
-        query = em.createNativeQuery("delete from pharmacists");
+        query = em.createNativeQuery("DELETE FROM pharmacists");
         query.executeUpdate();
 
-        query = em.createNativeQuery("delete from orders");
+        query = em.createNativeQuery("DELETE FROM orders");
         query.executeUpdate();
 
-        query = em.createNativeQuery("ALTER SEQUENCE hibernate_sequence RESTART WITH 1");
+        query = em.createNativeQuery("DELETE FROM lines");
+        query.executeUpdate();
+
+        query = em.createNativeQuery("DELETE FROM cart");
+        query.executeUpdate();
+
+        query = em.createNativeQuery("DELETE FROM sales");
         query.executeUpdate();
 
         tx.commit();
         em.close();
-
     }
 
 
     public void prepareData() {
 
-        // πριν εισάγουμε τα δεδομένα διαγράφουμε ότι υπάρχει
+        // Delete all data before inserting new
         eraseData();
 
         Order firstorder = new Order("2017-02-22",OrderState.PENDING,20.0,111,2);
 
-        Set<LineItem>  asd = new HashSet<LineItem>();
+        Set<LineItem>  asd = new HashSet<>();
 
         LineItem firstlineitem = new LineItem (5);
         asd.add(firstlineitem);

@@ -1,13 +1,12 @@
 package gr.aueb.mscis.sample.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -39,6 +38,11 @@ public class Category {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@OneToMany(mappedBy = "category")
+	private Set<Product> products = new HashSet<>();
+	public Set <Product> getProducts() {return products;}
+	public void setProducts (Set <Product> products) {this.products = products;}
 
 
 	@Override

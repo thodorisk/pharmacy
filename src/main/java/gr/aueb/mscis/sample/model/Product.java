@@ -13,7 +13,7 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "name", length = 512, nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	@Column(name = "eofn", nullable = false)
@@ -73,6 +73,12 @@ public class Product {
 	public OnSale getOnSale() {
 		return onSale;
 	}
+
+	@ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn (name = "category_id")
+	private Category category;
+	public Category getCategory() {return category;}
+	public void setCategory(Category category) {this.category = category;}
 
 	@Override
 	public boolean equals(Object obj) {

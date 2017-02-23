@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,8 +21,10 @@ public class Order {
     private int id;
 
     @Column(name = "orderdate", nullable = false)
-    private String orderdate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date orderdate = new Date();
 
+    @Enumerated (EnumType.STRING)
     @Column(name = "status", nullable = false)
     private OrderState status;
 
@@ -48,10 +51,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(String orderdate, OrderState status, Double total, int lot, int quantity) {
+    public Order(Date orderdate, OrderState status, Double total, int lot, int quantity) {
         super();
         this.orderdate = orderdate;
-        this.status = status;
+        this.status= status;
         this.total = total;
         this.quantity = quantity;
         this.lot = lot;
@@ -65,11 +68,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getOrderdate() {
+    public Date getOrderdate() {
         return orderdate;
     }
 
-    public void setOrderdate(String orderdate) {
+    public void setOrderdate(Date orderdate) {
         this.orderdate = orderdate;
     }
 

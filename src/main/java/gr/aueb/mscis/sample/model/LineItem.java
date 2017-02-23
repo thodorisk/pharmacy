@@ -8,7 +8,7 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "Lines")
+@Table(name = "lines")
 public class LineItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,7 +17,7 @@ public class LineItem {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn (name = "order_id")
     private Order order;
     public Order getOrder() {return order;}

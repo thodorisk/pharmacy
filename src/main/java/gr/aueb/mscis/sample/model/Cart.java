@@ -1,6 +1,7 @@
 package gr.aueb.mscis.sample.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by thodoriskaragiannis on 18/02/2017.
@@ -15,7 +16,8 @@ public class Cart {
     private int id;
 
     @Column (name = "cartdate")
-    private String cartDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date cartDate = new Date();
 
     @OneToOne (mappedBy = "cart")
     private Pharmacist pharmacist;
@@ -28,7 +30,7 @@ public class Cart {
 
     }
 
-    public Cart(String cartDate) {
+    public Cart(Date cartDate) {
         super();
         this.cartDate = cartDate;
     }
@@ -41,11 +43,11 @@ public class Cart {
         this.id = id;
     }
 
-    public String getCartDate() {
+    public Date getCartDate() {
         return cartDate;
     }
 
-    public void setCartDate(String cartDate) {
+    public void setCartDate(Date cartDate) {
         this.cartDate = cartDate;
     }
 
