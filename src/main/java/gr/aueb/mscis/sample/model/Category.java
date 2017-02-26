@@ -22,7 +22,15 @@ public class Category {
 
 	public Category() {
 	}
+	
+	
 		
+	public Category(String description) {
+		super();
+		this.description = description;
+	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -39,8 +47,9 @@ public class Category {
 		this.description = description;
 	}
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
 	private Set<Product> products = new HashSet<>();
+	
 	public Set <Product> getProducts() {return products;}
 	public void setProducts (Set <Product> products) {this.products = products;}
 

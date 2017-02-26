@@ -1,8 +1,5 @@
 package gr.aueb.mscis.sample.model;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -15,13 +12,13 @@ class Person {
     @Column(name="email", nullable = false)
     private String email;
     @Column(name="phone")
-    private int phone;
+    private String phone;
     @Column(name="vatNo")
     private int vatNo;
 
     public Person() { }
 
-    Person (String firstName, String lastName, String email, int phone, int vatNo) {
+    Person (String firstName, String lastName, String email, String phone, int vatNo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -53,16 +50,16 @@ class Person {
         return email;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
     public void setVatNo(int VatNo) {
-        this.vatNo = vatNo;
+        this.vatNo = VatNo;
     }
 
     public int getVatNo() {

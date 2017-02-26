@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
 
 @Entity
 @Table(name = "orders")

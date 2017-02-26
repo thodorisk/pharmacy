@@ -7,9 +7,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
 
 @Entity
 @Table(name = "accounts")
@@ -31,14 +28,20 @@ public class Account {
     @Column(name="dateopened", nullable = false)
     String dateopened;
 
-    @OneToOne (mappedBy = "account")
+    @OneToOne (mappedBy = "account",cascade=CascadeType.PERSIST)
     private Pharmacist pharmacist;
 
     public Pharmacist getPharmacist() {
         return pharmacist;
     }
+    
+    public void setPharmacist(Pharmacist pharmacist) {
+		this.pharmacist = pharmacist;
+	}
 
-    @OneToMany(mappedBy="account")
+
+
+	@OneToMany(mappedBy="account")
     private Set<Order> orders = new HashSet<Order>();
     public Set <Order> getOrders(){return orders;}
 
@@ -46,9 +49,9 @@ public class Account {
     public Account() {
     }
 
-    public Account(int id, String username,
+    public Account( String username,
                       String password, Boolean isclosed, String dateopened) {
-        this.id = id;
+    //    this.id = id;
         this.username = username;
         this.password = password;
         this.isclosed = isclosed;

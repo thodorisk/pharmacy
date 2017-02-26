@@ -1,5 +1,8 @@
 package gr.aueb.mscis.sample.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -11,7 +14,7 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -26,19 +29,18 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(int id, String name, int eofn, Double price) {
+	public Product(String name, int eofn, Double price) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.eofn = eofn;
 		this.price = price;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -79,7 +81,18 @@ public class Product {
 	private Category category;
 	public Category getCategory() {return category;}
 	public void setCategory(Category category) {this.category = category;}
+	
+	@OneToMany(mappedBy = "product")
+	private Set<Lot> lots  = new HashSet<>();
 
+	public Set<Lot> getLots() {
+		return lots;
+	}
+
+	public void setLots(Set<Lot> lots) {
+		this.lots = lots;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

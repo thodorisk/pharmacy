@@ -7,9 +7,6 @@ import javax.persistence.*;
 
 import gr.aueb.mscis.sample.contacts.Address;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
 
 @Entity
 @Table(name="pharmacists")
@@ -26,32 +23,41 @@ public class Pharmacist  {
     @Embedded
     private Person person = new Person();
 
-    @OneToOne
+    @OneToOne (cascade=CascadeType.PERSIST)
     @JoinColumn (name="account_id", unique = true)
-
     private Account account;
 
-    public Account getAccount() {
-        return account;
-    }
-
-    @OneToOne
+    @OneToOne (cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinColumn (name="cart_id")
-
     private Cart cart;
+    
+
+    public Person getPerson() {
+		return person;
+	}
+    
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+	
     public  Cart getCart(){
         return cart;
     }
 
-    public Pharmacist() { }
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public Pharmacist() { }
 
 
-    public Pharmacist(int pharmacistNo, String firstName,
-                    String lastName, String email, Address address) {
-        this.pharmacistNo = pharmacistNo;
+    public Pharmacist(String firstName,
+                    String lastName, String email, Address address, String phone, int vatNo) {
         person.setFirstName(firstName);
         person.setLastName(lastName);
         person.setEmail(email);
+        person.setPhone(phone);
+        person.setVatNo(vatNo);
         this.address = address == null ? null : new Address(address);
     }
 
@@ -87,6 +93,13 @@ public class Pharmacist  {
         return person.getEmail();
     }
 
+    public void setAccount(Account account) {
+		this.account = account;
+	}
+
+	public Account getAccount() {
+        return account;
+    }
 
     public void setAddress(Address address) {
         this.address = address == null ? null : new Address(address);
