@@ -128,7 +128,7 @@ public class Initializer  {
 
 
         //Create new order
-        Order firstorder = new Order(new Date(),OrderState.PENDING,20.0,111,20);
+        Order firstorder = new Order(new Date(),OrderState.PENDING,20.0);
 
         Set<LineItem> listofitems = new HashSet<>();
 

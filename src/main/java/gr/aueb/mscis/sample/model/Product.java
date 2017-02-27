@@ -78,8 +78,6 @@ public class Product {
 
 	public void setOnSale (OnSale onSale) {this.onSale = onSale;}
 
-
-
 	@ManyToOne (cascade = {CascadeType.ALL})
 	@JoinColumn (name = "category_id")
 	private Category category;
@@ -88,14 +86,22 @@ public class Product {
 	
 	@OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
 	private Set<Lot> lots  = new HashSet<>();
-
 	public Set<Lot> getLots() {
 		return lots;
 	}
-
 	public void setLots(Set<Lot> lots) {
 		this.lots = lots;
 	}
+
+	@OneToMany (mappedBy = "product", cascade = CascadeType.ALL)
+	private Set<LineItem> lineItems = new HashSet<>();
+	public Set<LineItem> getLineItems() {
+		return lineItems;
+	}
+	public void setLineItems(Set<LineItem> lineItems) {
+		this.lineItems = lineItems;
+	}
+
 	
 	@Override
 	public boolean equals(Object obj) {

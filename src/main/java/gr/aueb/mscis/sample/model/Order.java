@@ -31,12 +31,6 @@ public class Order {
     @Column(name = "total", nullable = false)
     private Double total;
 
-    @Column(name = "lot", nullable = false)
-    private int lot;
-
-    @Column(name = "quantity", nullable = false)
-    private int quantity;
-
     @ManyToOne (cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.LAZY)
     @JoinColumn (name="account_id")
     private Account account;
@@ -51,13 +45,11 @@ public class Order {
     public Order() {
     }
 
-    public Order(Date orderdate, OrderState status, Double total, int lot, int quantity) {
+    public Order(Date orderdate, OrderState status, Double total) {
         super();
         this.orderdate = orderdate;
         this.status= status;
         this.total = total;
-        this.quantity = quantity;
-        this.lot = lot;
     }
 
     public int getId() {
@@ -92,21 +84,6 @@ public class Order {
         this.total = total;
     }
 
-    public int getLot() {
-        return lot;
-    }
-
-    public void setLot(int lot) {
-        this.lot = lot;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -121,8 +98,6 @@ public class Order {
                 .append(orderdate, other.orderdate)
                 .append(status, other.status)
                 .append(total, other.total)
-                .append(lot, other.lot)
-                .append(quantity, other.quantity)
                 .isEquals();
     }
 
@@ -131,8 +106,6 @@ public class Order {
         return new HashCodeBuilder().append(orderdate)
                 .append(status)
                 .append(total)
-                .append(lot)
-                .append(quantity)
                 .toHashCode();
     }
 }

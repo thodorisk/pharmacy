@@ -23,6 +23,12 @@ public class LineItem {
     public Order getOrder() {return order;}
     public void setOrder(Order order) {this.order = order;}
 
+    @ManyToOne (cascade = {CascadeType.ALL})
+    @JoinColumn (name = "product_id")
+    private Product product;
+    public Product getProduct() {return product;}
+    public void setProduct(Product product) {this.product = product;}
+
 
     public LineItem(){
 

@@ -7,8 +7,8 @@ version="2.0">
 	<persistence-unit name="pharmacy" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 	   <properties>
-	      <property name="hibernate.show_sql" value="true"/>
-          <property name="hibernate.format_sql" value="true"/>
+	      <property name="hibernate.show_sql" value="false"/>
+          <property name="hibernate.format_sql" value="false"/>
 	      <property name="hibernate.connection.driver_class"
                     value="org.h2.Driver"/>
           <property name="hibernate.connection.url"
