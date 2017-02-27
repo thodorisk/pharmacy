@@ -12,6 +12,7 @@ import javax.persistence.*;
 import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.CatalogService;
 import gr.aueb.mscis.sample.service.PharmacistService;
+import gr.aueb.mscis.sample.service.SearchProductService;
 
 public class Initializer  {
 	
@@ -87,58 +88,65 @@ public class Initializer  {
         Product deponproduct = new Product("Depon", "111", 5.00);
         Product comtrexproduct = new Product("Comtrex", "112", 7.00);
         Product vitamincproduct = new Product("Vitamin C", "113", 8.00);
-        
+
+
         //Add stock to the above products
         Lot deponfirstlot = new Lot(601, 10);
-        Lot deponsecondlot = new Lot(602, 11);
-        Lot comtrexfirstlot = new Lot(400, 20);
-        Lot comtrexsecondlot = new Lot(401, 21);
-        Lot vitamincfirstlot = new Lot(752, 30);
-        Lot vitamincsecondlot = new Lot(753, 31);
         deponfirstlot.setProduct(deponproduct);
+        Lot deponsecondlot = new Lot(602, 11);
         deponsecondlot.setProduct(deponproduct);
-        comtrexfirstlot.setProduct(comtrexproduct);
-        comtrexsecondlot.setProduct(comtrexproduct);
-        vitamincfirstlot.setProduct(vitamincproduct);
-        vitamincsecondlot.setProduct(vitamincproduct);
+        deponproduct.getLots().add(deponfirstlot);
+        deponproduct.getLots().add(deponsecondlot);
 
-        OnSale kalokairi = new OnSale(20.0,"2016","2017");
+        Lot comtrexfirstlot = new Lot(400, 20);
+        comtrexfirstlot.setProduct(comtrexproduct);
+        Lot comtrexsecondlot = new Lot(401, 21);
+        comtrexsecondlot.setProduct(comtrexproduct);
+        comtrexproduct.getLots().add(comtrexfirstlot);
+        comtrexproduct.getLots().add(comtrexsecondlot);
+
+        Lot vitamincfirstlot = new Lot(752, 30);
+        vitamincfirstlot.setProduct(vitamincproduct);
+        Lot vitamincsecondlot = new Lot(753, 31);
+        vitamincsecondlot.setProduct(vitamincproduct);
+        vitamincproduct.getLots().add(vitamincfirstlot);
+        vitamincproduct.getLots().add(vitamincsecondlot);
+
 
         //Create categories
         Category drugscategory1 = new Category("Drugs");
-        Category drugscategory2 = new Category("Vitamins");
         deponproduct.setCategory(drugscategory1);
         comtrexproduct.setCategory(drugscategory1);
+
+        Category drugscategory2 = new Category("Vitamins");
         vitamincproduct.setCategory(drugscategory2);
 
-        Set asdg = new HashSet();
-        asdg.add(vitamincfirstlot);
-        asdg.add(vitamincsecondlot);
-        vitamincproduct.setLots(asdg);
-        
-        
+        //Create OnSale
+        deponproduct.setOnSale(new OnSale(10.0, "March 2017", "April 2017"));
+        comtrexproduct.setOnSale(new OnSale(8.0, "Feb 2017", "May 2017"));
+
+
         //Create new order
         Order firstorder = new Order(new Date(),OrderState.PENDING,20.0,111,20);
 
         Set<LineItem> listofitems = new HashSet<>();
-        
+
         //Create two lineitems
         LineItem firstlineitem = new LineItem (5);
         LineItem secondlineitem = new LineItem (12);
-        
-        
+
+
         listofitems.add(firstlineitem);
         listofitems.add(secondlineitem);
-        
+
         firstorder.setLineItems(listofitems);
 
         firstlineitem.setOrder(firstorder);
         secondlineitem.setOrder(firstorder);
-        
+
         //Save data to database
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        
         em.persist(terkap);
         em.persist(thokar);
         em.persist(firstorder);
@@ -152,80 +160,52 @@ public class Initializer  {
         em.persist(vitamincsecondlot);
         em.persist(deponproduct);
         em.persist(comtrexproduct);
-        em.persist(vitamincproduct);       
-        
-        
+        em.persist(vitamincproduct);
         tx.commit();
-        
-        
-        ////Random Queries for testing on an Entity Manager
-        ////Random Queries for testing on an Entity Manager
-        ////Random Queries for testing on an Entity Manager
-        ////Random Queries for testing on an Entity Manager
-        
-        
-        
-//        Query query = em.createQuery("select order from Order order");
-//        		//query.setParameter("quantityCrit", "5");
-//        		List<Order> results = query.getResultList();
-//        		
-//        		Set <LineItem> size_items = results.get(0).getLineItems();
-//        		for (LineItem item : size_items)
-//        	        System.out.println(Integer.toString(item.getId()) + "		" + item.getQuantity());
-        
+
+        //-------------------------------------------------------------------------------------------------------
         Order findorder = em.find(Order.class,5);
         Set <LineItem> size_items = findorder.getLineItems();
         System.out.println("");
         for (LineItem item : size_items)
         System.out.println(Integer.toString(item.getId()) + "		" + item.getQuantity());
-        
+
         PharmacistService service = new PharmacistService(em);
     	List<Pharmacist> pharmacists = service.findPharmacistsByEmail("tkaparak");
     	for (Pharmacist pharmacist : pharmacists)
     	System.out.println(pharmacist.getLastName().toString());
-    	
+
     	List<Pharmacist> listofAllpharmacists =  service.findAllPharmacists();
     	for (Pharmacist pharmacist : listofAllpharmacists)
     		System.out.println(pharmacist.getLastName().toString());
-    	
+
     	List<Pharmacist> listpharmacistsbyAFM =  service.findPharmacistsByAFM("123456789");
     	for (Pharmacist pharmacist : listpharmacistsbyAFM)
         	System.out.println("123456789 	" + pharmacist.getLastName().toString());
-    	
-        
+
+
+        //-------------------------------------------------------------------------------------------------------
+        // ADD another product using CatalogService save functionality
     	CatalogService cs = new CatalogService(em);
+
     	Product productnew = cs.save(new Product("Panadol", "120", 3.00));
-        productnew.setOnSale(kalokairi);
-    	System.out.println(productnew.getName().toString());
+        productnew.setOnSale(new OnSale(20.0,"March 2017","April 2017"));
     	productnew.setCategory(drugscategory1);
     	EntityTransaction tx1 = em.getTransaction();
         tx1.begin();
     	em.persist(productnew);
     	tx1.commit();
 
-
-        List<Product> allproducts =  cs.findProductByName("Vitamin C");
-        int i=0;
-        for (Product product : allproducts)
-        {
-
-            if (i < new ArrayList<Lot>(product.getLots()).size())
-                System.out.println("Product Details: 	" + product.getName() + "	" + product.getCategory().getDescription() + "	" + product.getEofn() + "	" +  new ArrayList<Lot>(product.getLots()).get(i).getQuantity());
-            i++;
-        }
-
-    	List<Product> allproductsbycategory =  cs.findProductByCategory("Vitamins");
-    	for (Product product : allproductsbycategory)
-        	System.out.println("Product:	" + product.getName().toString());
-    	
-    	
-    	List<Product> allproductsbyEOF =  cs.findProductByEOF("111");
-    	for (Product product : allproductsbyEOF)
-        	System.out.println("Product:	" + product.getName().toString());
-
-
+        //-------------------------------------------------------------------------------------------------------
+    	//TODO: comment out to perform Delete operation on product with ID:19 -> Panadol
         //cs.deleteProduct(19);
 
+        //-------------------------------------------------------------------------------------------------------
+        //SHOW PRODUCTS
+        SearchProductService searchProductService = new SearchProductService(cs);
+        searchProductService.searchProductByCategory("Vitamins");
+        searchProductService.searchProductByName("Depon");
+        searchProductService.searchProductByEofn("120");
 
         em.close();
         emf.close();

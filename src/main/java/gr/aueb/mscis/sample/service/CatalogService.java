@@ -56,9 +56,9 @@ public class CatalogService {
 		tx.begin();
 		List<Product> results = null;
 
-		results = em.createQuery("select p from Product p join fetch p.lots l where p.name like :name")
-
+		results = em.createQuery("select p from Product p where p.name like :name")
 				.setParameter("name", "%" + name + "%").getResultList();
+
 		tx.commit();
 		return results;
 	}
@@ -69,9 +69,9 @@ public class CatalogService {
 		tx.begin();
 		List<Product> results = null;
 
-		results = em.createQuery("select p from Product p join fetch p.category c where p.category.description like :name")
-
+		results = em.createQuery("select p from Product p where p.category.description like :name")
 				.setParameter("name", "%" + description + "%").getResultList();
+
 		tx.commit();
 		return results;
 	}
@@ -83,8 +83,8 @@ public class CatalogService {
 		List<Product> results = null;
 
 		results = em.createQuery("select p from Product p where p.eofn like :name")
-
 				.setParameter("name", "%" + eof + "%").getResultList();
+
 		tx.commit();
 		return results;
 	}
