@@ -20,7 +20,7 @@ public class Product {
 	private String name;
 
 	@Column(name = "eofn", nullable = false)
-	private int eofn;
+	private String eofn;
 
 	@Column(name = "price", nullable = false)
 	private Double price;
@@ -29,7 +29,7 @@ public class Product {
 	public Product() {
 	}
 
-	public Product(String name, int eofn, Double price) {
+	public Product(String name, String eofn, Double price) {
 		super();
 		this.name = name;
 		this.eofn = eofn;
@@ -52,11 +52,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public int getEofn() {
+	public String getEofn() {
 		return eofn;
 	}
 
-	public void setEofn(int eofn) {
+	public void setEofn(String eofn) {
 		this.eofn = eofn;
 	}
 
@@ -82,7 +82,7 @@ public class Product {
 	public Category getCategory() {return category;}
 	public void setCategory(Category category) {this.category = category;}
 	
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
 	private Set<Lot> lots  = new HashSet<>();
 
 	public Set<Lot> getLots() {

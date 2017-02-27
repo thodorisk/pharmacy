@@ -7,6 +7,9 @@ import javax.persistence.*;
 
 import gr.aueb.mscis.sample.contacts.Address;
 
+/**
+ * Created by thodoriskaragiannis on 18/02/2017.
+ */
 
 @Entity
 @Table(name="pharmacists")
@@ -52,7 +55,7 @@ public class Pharmacist  {
 
 
     public Pharmacist(String firstName,
-                    String lastName, String email, Address address, String phone, int vatNo) {
+                    String lastName, String email, Address address, String phone, String vatNo) {
         person.setFirstName(firstName);
         person.setLastName(lastName);
         person.setEmail(email);

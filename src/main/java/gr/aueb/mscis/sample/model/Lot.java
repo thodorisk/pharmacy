@@ -68,5 +68,13 @@ public class Lot {
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

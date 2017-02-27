@@ -2,6 +2,9 @@ package gr.aueb.mscis.sample.model;
 
 import javax.persistence.*;
 
+/**
+ * Created by thodoriskaragiannis on 18/02/2017.
+ */
 
 @Entity
 @Table(name = "sales")

@@ -22,7 +22,6 @@ import gr.aueb.mscis.sample.model.Pharmacist;
 import gr.aueb.mscis.sample.model.Order;
 import gr.aueb.mscis.sample.model.OrderState;
 
-
 public class Initializer  {
 	
 	public static final int KAPARAKOU_ID = 1;
@@ -79,24 +78,21 @@ public class Initializer  {
         eraseData();
 
         //Create Pharmacists
-        Pharmacist terkap = new Pharmacist("Tereza","Kaparakou","tkaparakou@aueb.gr",null,"2109999999", 123456789);
-        Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis","thkaragiannis@aueb.gr",null,"2109999998", 987654321);
-        Pharmacist dioko = new Pharmacist("Dionisis","Koropoulis","dkoropoulis@aueb.gr",null,"2108888888", 123456780);
+        Pharmacist terkap = new Pharmacist("Tereza","Kaparakou","tkaparakou@aueb.gr",null,"2109999999", "123456789");
+        Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis","thkaragiannis@aueb.gr",null,"2109999998", "987654321");
         
         //Create Pharmacists accounts
         Account terkap_acc = new Account("terkap", "12345", false, "2016-01-01");
         Account thokar_acc = new Account("thokar", "67891", false, "2016-01-01");
-        Account diokor_acc = new Account("diokor", "55555", false, "2016-01-01");
         
         //Connect Pharmacists to their accounts
         terkap.setAccount(terkap_acc);
         thokar.setAccount(thokar_acc);
-        dioko.setAccount(diokor_acc);
         
         //Create products
-        Product deponproduct = new Product("Depon", 111, 5.00);
-        Product comtrexproduct = new Product("Comtrex", 112, 7.00);
-        Product vitamincproduct = new Product("Vitamin C", 113, 8.00);
+        Product deponproduct = new Product("Depon", "111", 5.00);
+        Product comtrexproduct = new Product("Comtrex", "112", 7.00);
+        Product vitamincproduct = new Product("Vitamin C", "113", 8.00);
         
         //Add stock to the above products
         Lot deponfirstlot = new Lot(601, 10);
@@ -118,6 +114,12 @@ public class Initializer  {
         deponproduct.setCategory(drugscategory1);
         comtrexproduct.setCategory(drugscategory1);
         vitamincproduct.setCategory(drugscategory2);
+
+        Set asdg = new HashSet();
+        asdg.add(vitamincfirstlot);
+        asdg.add(vitamincsecondlot);
+        vitamincproduct.setLots(asdg);
+        
         
         //Create new order
         Order firstorder = new Order(new Date(),OrderState.PENDING,20.0,111,20);
@@ -127,7 +129,8 @@ public class Initializer  {
         //Create two lineitems
         LineItem firstlineitem = new LineItem (5);
         LineItem secondlineitem = new LineItem (12);
-
+        
+        
         listofitems.add(firstlineitem);
         listofitems.add(secondlineitem);
         
@@ -143,7 +146,6 @@ public class Initializer  {
         
         em.persist(terkap);
         em.persist(thokar);
-        em.persist(dioko);
         em.persist(firstorder);
         em.persist(firstlineitem);
         em.persist(secondlineitem);
@@ -189,18 +191,43 @@ public class Initializer  {
     	
     	List<Pharmacist> listofAllpharmacists =  service.findAllPharmacists();
     	for (Pharmacist pharmacist : listofAllpharmacists)
-    	System.out.println(pharmacist.getLastName().toString());
+    		System.out.println(pharmacist.getLastName().toString());
+    	
+    	List<Pharmacist> listpharmacistsbyAFM =  service.findPharmacistsByAFM("123456789");
+    	for (Pharmacist pharmacist : listpharmacistsbyAFM)
+        	System.out.println("123456789 	" + pharmacist.getLastName().toString());
+    	
         
     	CatalogService cs = new CatalogService(em);
-    	Product productnew = cs.save(new Product("Panadol", 120, 3.00));
+    	Product productnew = cs.save(new Product("Panadol", "120", 3.00));
     	System.out.println(productnew.getName().toString());
     	productnew.setCategory(drugscategory1);
     	EntityTransaction tx1 = em.getTransaction();
-        tx.begin();
+        tx1.begin();
     	em.persist(productnew);
     	tx1.commit();
-    	
-        em.close();
 
+
+        List<Product> allproducts =  cs.findProductByName("Vitamin C");
+        int i=0;
+        for (Product product : allproducts)
+        {
+
+            if (i < new ArrayList<Lot>(product.getLots()).size())
+                System.out.println("Product Details: 	"+ product.getId() + "	" + product.getName() + "	" + product.getCategory().getDescription() + "	" + product.getEofn() + "	" +  new ArrayList<Lot>(product.getLots()).get(i).getQuantity());
+            i++;
+        }
+    	
+    	
+    	List<Product> allproductsbycategory =  cs.findProductByCategory("Vitamins");
+    	for (Product product : allproductsbycategory)
+        	System.out.println("Product:	" + product.getName().toString());
+    	
+    	
+    	List<Product> allproductsbyEOF =  cs.findProductByEOF("111");
+    	for (Product product : allproductsbyEOF)
+        	System.out.println("Product:	" + product.getName().toString());
+        em.close();
+       
     }
 }

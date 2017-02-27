@@ -23,18 +23,6 @@ public class PharmacistService {
 
 		return results;
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<Pharmacist> findPharmacistsByVat(String vat_no) {
-
-		List<Pharmacist> results = null;
-		results = em
-				.createQuery(
-						"select p from Pharmacist p where p.person.vatNo like :vatno ")
-				.setParameter("vatno", vat_no).getResultList();
-
-		return results;
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Pharmacist> findPharmacistsByEmail(String email) {
@@ -48,7 +36,18 @@ public class PharmacistService {
 		return results;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<Pharmacist> findPharmacistsByAFM(String afm) {
+
+		List<Pharmacist> results = null;
+		results = em
+				.createQuery(
+						"select p from Pharmacist p where p.person.vatNo like :vatNumber")
+				.setParameter("vatNumber", afm ).getResultList();
+
+		return results;
+	}
+		
 	public Pharmacist findPharmacistById(int id) {
 		return em.find(Pharmacist.class, id);
 	}

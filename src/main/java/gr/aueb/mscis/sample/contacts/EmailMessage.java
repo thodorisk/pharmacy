@@ -1,5 +1,8 @@
 package gr.aueb.mscis.sample.contacts;
 
+/**
+ * Created by thodoriskaragiannis on 18/02/2017.
+ */
 
 public class EmailMessage {
     private EmailAddress from;

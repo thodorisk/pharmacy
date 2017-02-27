@@ -6,6 +6,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+/**
+ * Created by thodoriskaragiannis on 18/02/2017.
+ */
+
 @Embeddable
 public class Address {
     @Column(name="street", length=50)
