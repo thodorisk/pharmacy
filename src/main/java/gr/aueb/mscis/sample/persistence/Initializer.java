@@ -1,19 +1,10 @@
 package gr.aueb.mscis.sample.persistence;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import gr.aueb.mscis.sample.model.*;
+import gr.aueb.mscis.sample.service.*;
 
 import javax.persistence.*;
-
-import gr.aueb.mscis.sample.model.*;
-import gr.aueb.mscis.sample.service.CatalogService;
-import gr.aueb.mscis.sample.service.PharmacistService;
-import gr.aueb.mscis.sample.service.SearchPharmacistService;
-import gr.aueb.mscis.sample.service.SearchProductService;
+import java.util.Date;
 
 public class Initializer  {
 	
@@ -126,33 +117,31 @@ public class Initializer  {
         deponproduct.setOnSale(new OnSale(10.0, "March 2017", "April 2017"));
         comtrexproduct.setOnSale(new OnSale(8.0, "Feb 2017", "May 2017"));
 
+        //Create Order
+        Order firstOrder = new Order(new Date(), OrderState.PENDING, 20.0);
+        LineItem firstlineItem = new LineItem();
+        firstlineItem.setProduct(deponproduct);
+        firstlineItem.setQuantity(5);
+        firstlineItem.setOrder(firstOrder);
+        deponproduct.getLineItems().add(firstlineItem);
+        firstOrder.getLineItems().add(firstlineItem);
 
-        //Create new order
-        Order firstorder = new Order(new Date(),OrderState.PENDING,20.0);
+        LineItem secondlineItem = new LineItem();
+        secondlineItem.setProduct(vitamincproduct);
+        secondlineItem.setQuantity(2);
+        secondlineItem.setOrder(firstOrder);
+        vitamincproduct.getLineItems().add(secondlineItem);
+        firstOrder.getLineItems().add(secondlineItem);
 
-        Set<LineItem> listofitems = new HashSet<>();
-
-        //Create two lineitems
-        LineItem firstlineitem = new LineItem (5);
-        LineItem secondlineitem = new LineItem (12);
-
-
-        listofitems.add(firstlineitem);
-        listofitems.add(secondlineitem);
-
-        firstorder.setLineItems(listofitems);
-
-        firstlineitem.setOrder(firstorder);
-        secondlineitem.setOrder(firstorder);
 
         //Save data to database
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(terkap);
         em.persist(thokar);
-        em.persist(firstorder);
-        em.persist(firstlineitem);
-        em.persist(secondlineitem);
+        em.persist(firstOrder);
+        em.persist(firstlineItem);
+        em.persist(secondlineItem);
         em.persist(deponfirstlot);
         em.persist(deponsecondlot);
         em.persist(comtrexfirstlot);
@@ -163,13 +152,6 @@ public class Initializer  {
         em.persist(comtrexproduct);
         em.persist(vitamincproduct);
         tx.commit();
-
-        //-------------------------------------------------------------------------------------------------------
-        Order findorder = em.find(Order.class,5);
-        Set <LineItem> size_items = findorder.getLineItems();
-        System.out.println("");
-        for (LineItem item : size_items)
-        System.out.println(Integer.toString(item.getId()) + "		" + item.getQuantity());
 
         //-------------------------------------------------------------------------------------------------------
         // ADD another product using CatalogService save functionality
@@ -207,6 +189,16 @@ public class Initializer  {
 
         SearchPharmacistService searchPharmacistService = new SearchPharmacistService(new PharmacistService(em));
         searchPharmacistService.searchAllPharmacist();
+
+        //-------------------------------------------------------------------------------------------------------
+        // SHOW ALL ORDERS
+        System.out.println("\n---------------");
+        System.out.println("ORDERS SEARCHES");
+        System.out.println("---------------");
+
+        SearchOrderService searchOrderService = new SearchOrderService(new OrderService(em));
+        searchOrderService.searchAllOrders();
+
 
 
         em.close();
