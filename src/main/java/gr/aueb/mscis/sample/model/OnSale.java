@@ -23,11 +23,14 @@ public class OnSale {
     @Column(name = "ends", nullable = false)
     private String enddate;
 
-    @OneToOne (mappedBy = "onSale")
+    @OneToOne (mappedBy = "onSale", cascade = {CascadeType.ALL})
     private Product product;
 
     public Product getProduct() {
         return product;
+    }
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public OnSale() {

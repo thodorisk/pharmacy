@@ -3,6 +3,7 @@ package gr.aueb.mscis.sample.service;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import gr.aueb.mscis.sample.model.Product;
@@ -27,6 +28,25 @@ public class CatalogService {
 		}
 		tx.commit();
 		return product;
+
+	}
+
+	public boolean deleteProduct(int id) {
+
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+
+		try {
+			Product product = em.getReference(Product.class, id);
+			System.out.println("Product deleted: " + product.getName());
+			em.remove(product);
+		} catch (EntityNotFoundException e) {
+			tx.rollback();
+			return false;
+		}
+
+		tx.commit();
+		return true;
 
 	}
 	
@@ -68,7 +88,6 @@ public class CatalogService {
 		tx.commit();
 		return results;
 	}
-	
 		
 	public Product findProductById(int id) {
 

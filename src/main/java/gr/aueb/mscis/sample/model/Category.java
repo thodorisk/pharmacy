@@ -47,7 +47,7 @@ public class Category {
 		this.description = description;
 	}
 
-	@OneToMany(mappedBy = "category",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@OneToMany(mappedBy = "category",cascade = {CascadeType.ALL})
 	private Set<Product> products = new HashSet<>();
 	
 	public Set <Product> getProducts() {return products;}

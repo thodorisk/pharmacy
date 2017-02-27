@@ -7,20 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+import javax.persistence.*;
 
-import gr.aueb.mscis.sample.model.Category;
-import gr.aueb.mscis.sample.model.LineItem;
-import gr.aueb.mscis.sample.model.Lot;
-import gr.aueb.mscis.sample.model.Product;
+import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.CatalogService;
 import gr.aueb.mscis.sample.service.PharmacistService;
-import gr.aueb.mscis.sample.model.Account;
-import gr.aueb.mscis.sample.model.Pharmacist;
-import gr.aueb.mscis.sample.model.Order;
-import gr.aueb.mscis.sample.model.OrderState;
 
 public class Initializer  {
 	
@@ -28,13 +19,14 @@ public class Initializer  {
 	public static final int KARAGIANNIS_ID = 2;
     public static final int KOROPOULIS_ID = 3;
 
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("pharmacy");
+    private EntityManager em = emf.createEntityManager();
 
     /**
      * Remove all data from database.
      * The functionality must be executed within the bounds of a transaction
      */
     public void  eraseData() {
-        EntityManager em = JPAUtil.getCurrentEntityManager();
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -68,7 +60,6 @@ public class Initializer  {
         query.executeUpdate();
 
         tx.commit();
-        em.close();
     }
 
     
@@ -78,16 +69,19 @@ public class Initializer  {
         eraseData();
 
         //Create Pharmacists
-        Pharmacist terkap = new Pharmacist("Tereza","Kaparakou","tkaparakou@aueb.gr",null,"2109999999", "123456789");
-        Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis","thkaragiannis@aueb.gr",null,"2109999998", "987654321");
+        Pharmacist terkap = new Pharmacist("Tereza","Kaparakou","tkaparakou@aueb.gr",null,"2109999999", "1234567890");
+        Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis","thkaragiannis@aueb.gr",null,"2109999998", "9876543210");
+        Pharmacist dkoro = new Pharmacist("Dionusis","Koropoulis","dkoropoulis@aueb.gr",null,"2109999997", "5555555555");
         
         //Create Pharmacists accounts
         Account terkap_acc = new Account("terkap", "12345", false, "2016-01-01");
         Account thokar_acc = new Account("thokar", "67891", false, "2016-01-01");
+        Account dkoro_acc = new Account("dkoro", "55555", false, "2017-01-01");
         
         //Connect Pharmacists to their accounts
         terkap.setAccount(terkap_acc);
         thokar.setAccount(thokar_acc);
+        dkoro.setAccount(dkoro_acc);
         
         //Create products
         Product deponproduct = new Product("Depon", "111", 5.00);
@@ -107,7 +101,9 @@ public class Initializer  {
         comtrexsecondlot.setProduct(comtrexproduct);
         vitamincfirstlot.setProduct(vitamincproduct);
         vitamincsecondlot.setProduct(vitamincproduct);
-        
+
+        OnSale kalokairi = new OnSale(20.0,"2016","2017");
+
         //Create categories
         Category drugscategory1 = new Category("Drugs");
         Category drugscategory2 = new Category("Vitamins");
@@ -140,7 +136,6 @@ public class Initializer  {
         secondlineitem.setOrder(firstorder);
         
         //Save data to database
-        EntityManager em = JPAUtil.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         
@@ -200,6 +195,7 @@ public class Initializer  {
         
     	CatalogService cs = new CatalogService(em);
     	Product productnew = cs.save(new Product("Panadol", "120", 3.00));
+        productnew.setOnSale(kalokairi);
     	System.out.println(productnew.getName().toString());
     	productnew.setCategory(drugscategory1);
     	EntityTransaction tx1 = em.getTransaction();
@@ -214,11 +210,10 @@ public class Initializer  {
         {
 
             if (i < new ArrayList<Lot>(product.getLots()).size())
-                System.out.println("Product Details: 	"+ product.getId() + "	" + product.getName() + "	" + product.getCategory().getDescription() + "	" + product.getEofn() + "	" +  new ArrayList<Lot>(product.getLots()).get(i).getQuantity());
+                System.out.println("Product Details: 	" + product.getName() + "	" + product.getCategory().getDescription() + "	" + product.getEofn() + "	" +  new ArrayList<Lot>(product.getLots()).get(i).getQuantity());
             i++;
         }
-    	
-    	
+
     	List<Product> allproductsbycategory =  cs.findProductByCategory("Vitamins");
     	for (Product product : allproductsbycategory)
         	System.out.println("Product:	" + product.getName().toString());
@@ -227,7 +222,13 @@ public class Initializer  {
     	List<Product> allproductsbyEOF =  cs.findProductByEOF("111");
     	for (Product product : allproductsbyEOF)
         	System.out.println("Product:	" + product.getName().toString());
+
+
+        //cs.deleteProduct(19);
+
+
         em.close();
+        emf.close();
        
     }
 }

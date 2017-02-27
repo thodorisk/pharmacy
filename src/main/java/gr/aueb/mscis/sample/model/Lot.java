@@ -24,7 +24,7 @@ public class Lot {
 	@Column(name = "quantity", nullable = false)
 	int quantity;
 	
-	@ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToOne (cascade = {CascadeType.ALL})
 	@JoinColumn (name = "product_id")
 	private Product product;
 		

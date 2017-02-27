@@ -68,7 +68,7 @@ public class Product {
 		this.price = price;
 	}
 
-	@OneToOne
+	@OneToOne (cascade = {CascadeType.ALL})
 	@JoinColumn (name = "sale_id")
 	private OnSale onSale;
 
@@ -76,13 +76,17 @@ public class Product {
 		return onSale;
 	}
 
-	@ManyToOne (cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	public void setOnSale (OnSale onSale) {this.onSale = onSale;}
+
+
+
+	@ManyToOne (cascade = {CascadeType.ALL})
 	@JoinColumn (name = "category_id")
 	private Category category;
 	public Category getCategory() {return category;}
 	public void setCategory(Category category) {this.category = category;}
 	
-	@OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
 	private Set<Lot> lots  = new HashSet<>();
 
 	public Set<Lot> getLots() {
