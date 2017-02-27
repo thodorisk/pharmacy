@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-class Person {
+public class Person {
     @Column(name="firstname")
     private String firstName;
     @Column(name="lastname")

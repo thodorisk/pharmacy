@@ -12,6 +12,7 @@ import javax.persistence.*;
 import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.CatalogService;
 import gr.aueb.mscis.sample.service.PharmacistService;
+import gr.aueb.mscis.sample.service.SearchPharmacistService;
 import gr.aueb.mscis.sample.service.SearchProductService;
 
 public class Initializer  {
@@ -170,20 +171,6 @@ public class Initializer  {
         for (LineItem item : size_items)
         System.out.println(Integer.toString(item.getId()) + "		" + item.getQuantity());
 
-        PharmacistService service = new PharmacistService(em);
-    	List<Pharmacist> pharmacists = service.findPharmacistsByEmail("tkaparak");
-    	for (Pharmacist pharmacist : pharmacists)
-    	System.out.println(pharmacist.getLastName().toString());
-
-    	List<Pharmacist> listofAllpharmacists =  service.findAllPharmacists();
-    	for (Pharmacist pharmacist : listofAllpharmacists)
-    		System.out.println(pharmacist.getLastName().toString());
-
-    	List<Pharmacist> listpharmacistsbyAFM =  service.findPharmacistsByAFM("123456789");
-    	for (Pharmacist pharmacist : listpharmacistsbyAFM)
-        	System.out.println("123456789 	" + pharmacist.getLastName().toString());
-
-
         //-------------------------------------------------------------------------------------------------------
         // ADD another product using CatalogService save functionality
     	CatalogService cs = new CatalogService(em);
@@ -202,10 +189,25 @@ public class Initializer  {
 
         //-------------------------------------------------------------------------------------------------------
         //SHOW PRODUCTS
+        System.out.println("\n-----------------");
+        System.out.println("PRODUCTS SEARCHES");
+        System.out.println("-----------------");
+
         SearchProductService searchProductService = new SearchProductService(cs);
         searchProductService.searchProductByCategory("Vitamins");
         searchProductService.searchProductByName("Depon");
         searchProductService.searchProductByEofn("120");
+
+        //-------------------------------------------------------------------------------------------------------
+        //SHOW ALL PHARMACISTs
+
+        System.out.println("\n--------------------");
+        System.out.println("PHARMACISTS SEARCHES");
+        System.out.println("--------------------");
+
+        SearchPharmacistService searchPharmacistService = new SearchPharmacistService(new PharmacistService(em));
+        searchPharmacistService.searchAllPharmacist();
+
 
         em.close();
         emf.close();

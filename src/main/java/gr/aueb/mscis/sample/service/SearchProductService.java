@@ -5,9 +5,6 @@ import gr.aueb.mscis.sample.model.Product;
 
 import java.util.List;
 
-/**
- * Created by alexandros on 27-Feb-17.
- */
 public class SearchProductService {
 
     private CatalogService cs;

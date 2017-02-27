@@ -47,11 +47,7 @@ public class PharmacistService {
 
 		return results;
 	}
-		
-	public Pharmacist findPharmacistById(int id) {
-		return em.find(Pharmacist.class, id);
-	}
-	
+
 	public List<Pharmacist> findAllPharmacists() {
 		List<Pharmacist> results = null;
 
