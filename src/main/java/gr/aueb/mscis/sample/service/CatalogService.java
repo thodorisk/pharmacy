@@ -6,6 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+
+import gr.aueb.mscis.sample.model.Lot;
+import gr.aueb.mscis.sample.model.OnSale;
 import gr.aueb.mscis.sample.model.Product;
 
 public class CatalogService {
@@ -115,5 +118,30 @@ public class CatalogService {
 		tx.commit();
 		return results;
 	}
+	
+	public void addLot(Product product, Lot newlot) {
+		
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		product.getLots().add(newlot);
+		tx.commit();
+	}
+	
+public void UpdateOnSale(Product product, OnSale onsale) {
+		
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		product.setOnSale(onsale);
+		tx.commit();
+	}
+	
+	public void RemoveOnSale(Product product) {
+		
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		product.setOnSale(null);
+		tx.commit();
+	}
+	
 
 }

@@ -3,6 +3,8 @@ package gr.aueb.mscis.sample.model;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import gr.aueb.mscis.sample.util.SimpleCalendar;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,8 +23,9 @@ public class Order {
     private int id;
 
     @Column(name = "orderdate", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date orderdate = new Date();
+    @org.hibernate.annotations.Type(
+            type="gr.aueb.mscis.sample.persistence.SimpleCalendarCustomType")
+    private SimpleCalendar orderdate;
 
     @Enumerated (EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -34,8 +37,7 @@ public class Order {
     @ManyToOne (cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.LAZY)
     @JoinColumn (name="account_id")
     private Account account;
-    public Account getAccount(){return account;}
-
+    
     @OneToMany (mappedBy = "order")
     private Set <LineItem> lineItems = new HashSet<LineItem>();
     public Set <LineItem> getLineItems() {return lineItems;}
@@ -45,7 +47,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Date orderdate, OrderState status, Double total) {
+    public Order(SimpleCalendar orderdate, OrderState status, Double total) {
         super();
         this.orderdate = orderdate;
         this.status= status;
@@ -60,15 +62,13 @@ public class Order {
         this.id = id;
     }
 
-    public Date getOrderdate() {
-        return orderdate;
-    }
-
-    public void setOrderdate(Date orderdate) {
-        this.orderdate = orderdate;
-    }
-
-    public OrderState getStatus() {
+    public SimpleCalendar getOrderdate() {
+		return orderdate;
+	}
+	public void setOrderdate(SimpleCalendar orderdate) {
+		this.orderdate = orderdate;
+	}
+	public OrderState getStatus() {
         return status;
     }
 
@@ -83,9 +83,16 @@ public class Order {
     public void setTotal(Double total) {
         this.total = total;
     }
+    
+    public Account getAccount() {
+    	return account;
+    	}
+    
+    public void setAccount(Account account) {
+		this.account = account;
+	}
 
-
-    @Override
+	@Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

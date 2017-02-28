@@ -2,12 +2,14 @@ package gr.aueb.mscis.sample.model;
 
 import javax.persistence.*;
 
+import gr.aueb.mscis.sample.util.SimpleCalendar;
+
 /**
  * Created by thodoriskaragiannis on 18/02/2017.
  */
 
 @Entity
-@Table(name = "sales")
+@Table(name = "onsales")
 public class OnSale {
 
     @Id
@@ -18,10 +20,14 @@ public class OnSale {
     private Double discount;
 
     @Column(name = "starts", nullable = false)
-    private String startdate;
+    @org.hibernate.annotations.Type(
+            type="gr.aueb.mscis.sample.persistence.SimpleCalendarCustomType")
+    private SimpleCalendar startdate;
 
     @Column(name = "ends", nullable = false)
-    private String enddate;
+    @org.hibernate.annotations.Type(
+            type="gr.aueb.mscis.sample.persistence.SimpleCalendarCustomType")
+    private SimpleCalendar enddate;
 
     @OneToOne (mappedBy = "onSale", cascade = {CascadeType.ALL})
     private Product product;
@@ -36,7 +42,7 @@ public class OnSale {
     public OnSale() {
     }
 
-    public OnSale(Double discount, String startdate, String enddate) {
+    public OnSale(Double discount, SimpleCalendar startdate, SimpleCalendar enddate) {
         super();
         this.discount = discount;
         this.startdate = startdate;
@@ -58,21 +64,19 @@ public class OnSale {
     public void setDiscount(Double discount) {
         this.discount = discount;
     }
+	public SimpleCalendar getStartdate() {
+		return startdate;
+	}
+	public void setStartdate(SimpleCalendar startdate) {
+		this.startdate = startdate;
+	}
+	public SimpleCalendar getEnddate() {
+		return enddate;
+	}
+	public void setEnddate(SimpleCalendar enddate) {
+		this.enddate = enddate;
+	}
 
-    public String getStartdate() {
-        return startdate;
-    }
 
-    public void setStartdate(String startdate) {
-        this.startdate = startdate;
-    }
-
-    public String getEnddate() {
-        return enddate;
-    }
-
-    public void setEnddate(String enddate) {
-        this.enddate = enddate;
-    }
 
 }

@@ -2,9 +2,9 @@ package gr.aueb.mscis.sample.persistence;
 
 import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.*;
+import gr.aueb.mscis.sample.util.SimpleCalendar;
 
 import javax.persistence.*;
-import java.util.Date;
 
 public class Initializer  {
 	
@@ -46,7 +46,7 @@ public class Initializer  {
         query = em.createNativeQuery("DELETE FROM cart");
         query.executeUpdate();
 
-        query = em.createNativeQuery("DELETE FROM sales");
+        query = em.createNativeQuery("DELETE FROM onsales");
         query.executeUpdate();
         
         query = em.createNativeQuery("DELETE FROM lots");
@@ -114,17 +114,19 @@ public class Initializer  {
         vitamincproduct.setCategory(drugscategory2);
 
         //Create OnSale
-        deponproduct.setOnSale(new OnSale(10.0, "March 2017", "April 2017"));
-        comtrexproduct.setOnSale(new OnSale(8.0, "Feb 2017", "May 2017"));
+        deponproduct.setOnSale(new OnSale(10.0, new SimpleCalendar(2017,3,1), new SimpleCalendar(2017,4,1)));
+        comtrexproduct.setOnSale(new OnSale(8.0, new SimpleCalendar(2017,2,1), new SimpleCalendar(2017,5,1)));
 
-        //Create Order
-        Order firstOrder = new Order(new Date(), OrderState.PENDING, 20.0);
+        //Create Order - Pharmacist: Kaparakou
+        Order firstOrder = new Order(new SimpleCalendar(2016,11,1), OrderState.PENDING, 20.0);
         LineItem firstlineItem = new LineItem();
         firstlineItem.setProduct(deponproduct);
         firstlineItem.setQuantity(5);
         firstlineItem.setOrder(firstOrder);
         deponproduct.getLineItems().add(firstlineItem);
         firstOrder.getLineItems().add(firstlineItem);
+        firstOrder.setAccount(terkap_acc);
+        terkap_acc.getOrders().add(firstOrder);
 
         LineItem secondlineItem = new LineItem();
         secondlineItem.setProduct(vitamincproduct);
@@ -132,7 +134,43 @@ public class Initializer  {
         secondlineItem.setOrder(firstOrder);
         vitamincproduct.getLineItems().add(secondlineItem);
         firstOrder.getLineItems().add(secondlineItem);
-
+        
+        //Create Two Orders - Pharmacist: Karagiannis
+        //First Order - Karagiannis
+        Order KaragiannisfirstOrder = new Order(new SimpleCalendar(2017,1,1), OrderState.PENDING, 10.0);
+        LineItem KaragiannisfirstlineItem = new LineItem();
+        KaragiannisfirstlineItem.setProduct(comtrexproduct);
+        KaragiannisfirstlineItem.setQuantity(12);
+        KaragiannisfirstlineItem.setOrder(KaragiannisfirstOrder);
+        comtrexproduct.getLineItems().add(KaragiannisfirstlineItem);
+        KaragiannisfirstOrder.getLineItems().add(KaragiannisfirstlineItem);
+        KaragiannisfirstOrder.setAccount(thokar_acc);
+        thokar_acc.getOrders().add(KaragiannisfirstOrder);
+        
+        LineItem KaragiannissecondlineItem = new LineItem();
+        KaragiannissecondlineItem.setProduct(vitamincproduct);
+        KaragiannissecondlineItem.setQuantity(30);
+        KaragiannissecondlineItem.setOrder(KaragiannisfirstOrder);
+        vitamincproduct.getLineItems().add(KaragiannissecondlineItem);
+        KaragiannisfirstOrder.getLineItems().add(KaragiannissecondlineItem);
+        
+        //_Second (2) Order - Karagiannis
+        Order KaragiannisfirstOrder_Second = new Order(new SimpleCalendar(2017,2,1), OrderState.PENDING, 50.0);
+        LineItem KaragiannisfirstlineItem_Second = new LineItem();
+        KaragiannisfirstlineItem_Second.setProduct(deponproduct);
+        KaragiannisfirstlineItem_Second.setQuantity(12);
+        KaragiannisfirstlineItem_Second.setOrder(KaragiannisfirstOrder_Second);
+        deponproduct.getLineItems().add(KaragiannisfirstlineItem_Second);
+        KaragiannisfirstOrder_Second.getLineItems().add(KaragiannisfirstlineItem_Second);
+        KaragiannisfirstOrder_Second.setAccount(thokar_acc);
+        thokar_acc.getOrders().add(KaragiannisfirstOrder_Second);
+        
+        LineItem KaragiannissecondlineItem_Second = new LineItem();
+        KaragiannissecondlineItem_Second.setProduct(vitamincproduct);
+        KaragiannissecondlineItem_Second.setQuantity(55);
+        KaragiannissecondlineItem_Second.setOrder(KaragiannisfirstOrder_Second);
+        vitamincproduct.getLineItems().add(KaragiannissecondlineItem_Second);
+        KaragiannisfirstOrder_Second.getLineItems().add(KaragiannissecondlineItem_Second);
 
         //Save data to database
         EntityTransaction tx = em.getTransaction();
@@ -151,6 +189,15 @@ public class Initializer  {
         em.persist(deponproduct);
         em.persist(comtrexproduct);
         em.persist(vitamincproduct);
+        em.persist(KaragiannisfirstOrder);
+        em.persist(KaragiannisfirstlineItem);
+        em.persist(KaragiannissecondlineItem);
+        em.persist(KaragiannisfirstOrder_Second);
+        em.persist(KaragiannisfirstlineItem_Second);
+        em.persist(KaragiannissecondlineItem_Second);
+
+        
+        		
         tx.commit();
 
         //-------------------------------------------------------------------------------------------------------
@@ -158,7 +205,7 @@ public class Initializer  {
     	CatalogService cs = new CatalogService(em);
 
     	Product productnew = cs.save(new Product("Panadol", "120", 3.00));
-        productnew.setOnSale(new OnSale(20.0,"March 2017","April 2017"));
+        productnew.setOnSale(new OnSale(20.0,new SimpleCalendar(2017,3,1),new SimpleCalendar(2017,4,1)));
     	productnew.setCategory(drugscategory1);
     	EntityTransaction tx1 = em.getTransaction();
         tx1.begin();
@@ -197,9 +244,22 @@ public class Initializer  {
         System.out.println("---------------");
 
         SearchOrderService searchOrderService = new SearchOrderService(new OrderService(em));
-        searchOrderService.searchAllOrders();
+        //searchOrderService.searchAllOrders();
+        searchOrderService.searchAllOrdersByPharmacist("1234567890",new SimpleCalendar(2016,10,30),new SimpleCalendar(2016,11,11));
+        //searchOrderService.searchAllOrdersByPharmacist("9876543210");
 
-
+        //-------------------------------------------------------------------------------------------------------
+        // SHOW ALL STATISTICS
+        System.out.println("\n---------------");
+        System.out.println("EARNINGS STATISTICS");
+        System.out.println("---------------");
+        StatisticService ss = new StatisticService(new OrderService(em));
+        System.out.println(ss.earningsByPharmacist("9876543210",new SimpleCalendar(2016,12,30),new SimpleCalendar(2017,1,31)));
+        searchOrderService.searchAllOrdersByPharmacist("9876543210",new SimpleCalendar(2016,12,30),new SimpleCalendar(2017,1,31));
+        System.out.println(ss.totalSales());
+        searchOrderService.searchSalesOfProductPerPeriod("111",new SimpleCalendar(2016,11,2),new SimpleCalendar(2017,2,1));
+        System.out.println(ss.salesPerProductPerPeriod("111",new SimpleCalendar(2016,11,2),new SimpleCalendar(2017,2,1)));
+        
 
         em.close();
         emf.close();
