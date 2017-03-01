@@ -52,6 +52,7 @@ public class Initializer  {
         query = em.createNativeQuery("DELETE FROM lots");
         query.executeUpdate();
 
+
         tx.commit();
     }
 
