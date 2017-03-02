@@ -91,7 +91,6 @@ public class OrderServiceTest {
         List<Order> orders = cs.findAllOrders();
         assertNotNull(orders);
         assertEquals("2016-11-1", orders.get(0).getOrderdate().toString());
-
     }
 
     @Test

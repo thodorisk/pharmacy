@@ -115,7 +115,6 @@ public class ProductServiceTest {
         Set<Lot> productLots = products.get(0).getLots();
         assertNotNull(productLots);
         assertEquals(2, productLots.size());
-
     }
 
     @Test

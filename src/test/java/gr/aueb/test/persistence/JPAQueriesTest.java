@@ -26,7 +26,6 @@ import gr.aueb.mscis.sample.model.Product;
  */
 public class JPAQueriesTest {
 
-    
     private EntityManagerFactory emf;
     private EntityManager em;
     
