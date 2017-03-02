@@ -66,7 +66,8 @@ public class Lot {
 	}
 
 	public void setProduct(Product product) {
-		this.product = product;
+		if (product != null)
+			this.product = product;
 	}
 	
 	

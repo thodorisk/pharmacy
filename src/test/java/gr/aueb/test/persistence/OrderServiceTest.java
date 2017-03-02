@@ -1,4 +1,4 @@
-package gr.aueb.test.model;
+package gr.aueb.test.persistence;
 
 import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.OrderService;

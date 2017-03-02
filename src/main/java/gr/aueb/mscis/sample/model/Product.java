@@ -57,7 +57,8 @@ public class Product {
 	}
 
 	public void setEofn(String eofn) {
-		this.eofn = eofn;
+		if (eofn != null)
+			this.eofn = eofn;
 	}
 
 	public Double getPrice() {
@@ -82,7 +83,10 @@ public class Product {
 	@JoinColumn (name = "category_id")
 	private Category category;
 	public Category getCategory() {return category;}
-	public void setCategory(Category category) {this.category = category;}
+	public void setCategory(Category category) {
+		if (category != null)
+		this.category = category;
+	}
 	
 	@OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
 	private Set<Lot> lots  = new HashSet<>();
@@ -90,7 +94,8 @@ public class Product {
 		return lots;
 	}
 	public void setLots(Set<Lot> lots) {
-		this.lots = lots;
+		if (lots != null)
+			this.lots = lots;
 	}
 
 	@OneToMany (mappedBy = "product", cascade = CascadeType.ALL)
@@ -102,33 +107,76 @@ public class Product {
 		this.lineItems = lineItems;
 	}
 
-	
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", eofn=" + eofn + ", price=" + price + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((eofn == null) ? 0 : eofn.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lineItems == null) ? 0 : lineItems.hashCode());
+		result = prime * result + ((lots == null) ? 0 : lots.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((onSale == null) ? 0 : onSale.hashCode());
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
-		if (obj.getClass() != getClass())
+		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		return new EqualsBuilder()
-				.append(name, other.name)
-				.append(eofn, other.eofn)
-				.append(price, other.price)
-				.isEquals();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(name)
-				.append(eofn)
-				.append(price)
-				.toHashCode();
-	}
-
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", eofn=" + eofn + ", price=" + price + "]";
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (eofn == null) {
+			if (other.eofn != null)
+				return false;
+		} else if (!eofn.equals(other.eofn))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lineItems == null) {
+			if (other.lineItems != null)
+				return false;
+		} else if (!lineItems.equals(other.lineItems))
+			return false;
+		if (lots == null) {
+			if (other.lots != null)
+				return false;
+		} else if (!lots.equals(other.lots))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (onSale == null) {
+			if (other.onSale != null)
+				return false;
+		} else if (!onSale.equals(other.onSale))
+			return false;
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
+			return false;
+		return true;
 	}
 }

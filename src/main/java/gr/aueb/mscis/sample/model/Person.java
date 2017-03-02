@@ -1,8 +1,6 @@
 package gr.aueb.mscis.sample.model;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -68,5 +66,56 @@ public class Person {
     public String getVatNo() {
         return vatNo;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + ((vatNo == null) ? 0 : vatNo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if (vatNo == null) {
+			if (other.vatNo != null)
+				return false;
+		} else if (!vatNo.equals(other.vatNo))
+			return false;
+		return true;
+	}
+    
+    
 
 }

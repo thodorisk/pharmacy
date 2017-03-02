@@ -3,9 +3,6 @@ package gr.aueb.mscis.sample.model;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
 
 @Entity
 @Table(name = "cart")
@@ -31,7 +28,8 @@ public class Cart {
     }
 
     public Cart(Date cartDate) {
-        super();
+    	super();
+    	if(cartDate != null)
         this.cartDate = cartDate;
     }
 

@@ -1,9 +1,6 @@
 package gr.aueb.mscis.sample;
 import gr.aueb.mscis.sample.persistence.Initializer;
 
-/**
- * Created by thodoriskaragiannis on 22/02/2017.
- */
 
 public class Main {
 

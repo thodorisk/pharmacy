@@ -7,9 +7,6 @@ import javax.persistence.*;
 
 import gr.aueb.mscis.sample.contacts.Address;
 
-/**
- * Created by thodoriskaragiannis on 18/02/2017.
- */
 
 @Entity
 @Table(name="pharmacists")
