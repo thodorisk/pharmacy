@@ -1,4 +1,4 @@
-package gr.aueb.test.persistence;
+package gr.aueb.test.service;
 
 import gr.aueb.mscis.sample.model.Category;
 import gr.aueb.mscis.sample.model.LineItem;
