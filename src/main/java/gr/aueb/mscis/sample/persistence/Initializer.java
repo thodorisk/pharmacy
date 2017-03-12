@@ -4,54 +4,59 @@ import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.*;
 import gr.aueb.mscis.sample.util.SimpleCalendar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
+
+import gr.aueb.mscis.sample.persistence.JPAUtil;
 
 public class Initializer  {
 	
-	public static final int KAPARAKOU_ID = 1;
-	public static final int KARAGIANNIS_ID = 2;
-    public static final int KOROPOULIS_ID = 3;
-
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("pharmacy");
-    private EntityManager em = emf.createEntityManager();
-
     /**
      * Remove all data from database.
      * The functionality must be executed within the bounds of a transaction
      */
     public void  eraseData() {
-
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         Query query;
+        
+        query = em.createNativeQuery("DELETE FROM lot_line");
+        query.executeUpdate();
+        
+        query = em.createNativeQuery("DELETE FROM lines");
+        query.executeUpdate();
 
+
+        
+        query = em.createNativeQuery("DELETE FROM lots");
+        query.executeUpdate();
+        
+        query = em.createNativeQuery("DELETE FROM pharmacists");
+        query.executeUpdate();
+   
+        query = em.createNativeQuery("DELETE FROM cart");
+        query.executeUpdate();
+        
         query = em.createNativeQuery("DELETE FROM products");
+        query.executeUpdate();
+        
+        query = em.createNativeQuery("DELETE FROM onsales");
+        query.executeUpdate();
+        
+        query = em.createNativeQuery("DELETE FROM orders");
+        query.executeUpdate();
+
+
+        
+        query = em.createNativeQuery("DELETE FROM accounts");
         query.executeUpdate();
 
         query = em.createNativeQuery("DELETE FROM categories");
         query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM accounts");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM pharmacists");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM orders");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM lines");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM cart");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM onsales");
-        query.executeUpdate();
         
-        query = em.createNativeQuery("DELETE FROM lots");
-        query.executeUpdate();
-
         tx.commit();
     }
 
@@ -60,24 +65,25 @@ public class Initializer  {
 
         // Delete all data before inserting new
         eraseData();
-
+        EntityManager em = JPAUtil.createEntityManager();
+        
         //Create Pharmacists
         Pharmacist terkap = new Pharmacist("Tereza","Kaparakou","tkaparakou@aueb.gr",null,"2109999999", "1234567890");
         Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis","thkaragiannis@aueb.gr",null,"2109999998", "9876543210");
-        Pharmacist dkoro = new Pharmacist("Dionusis","Koropoulis","dkoropoulis@aueb.gr",null,"2109999997", "5555555555");
+        
         
         //Create Pharmacists accounts
         Account terkap_acc = new Account("terkap", "12345", false, "2016-01-01");
         Account thokar_acc = new Account("thokar", "67891", false, "2016-01-01");
-        Account dkoro_acc = new Account("dkoro", "55555", false, "2017-01-01");
         
         //Connect Pharmacists to their accounts
         terkap.setAccount(terkap_acc);
         thokar.setAccount(thokar_acc);
-        dkoro.setAccount(dkoro_acc);
+        terkap_acc.setPharmacist(terkap);
+        thokar_acc.setPharmacist(thokar);
         
         //Create products
-        Product deponproduct = new Product("Depon", "111", 5.00);
+        Product deponproduct = new Product("Depon", "111", 5.50);
         Product comtrexproduct = new Product("Comtrex", "112", 7.00);
         Product vitamincproduct = new Product("Vitamin C", "113", 8.00);
 
@@ -260,9 +266,20 @@ public class Initializer  {
         searchOrderService.searchSalesOfProductPerPeriod("111",new SimpleCalendar(2016,11,2),new SimpleCalendar(2017,2,1));
         System.out.println(ss.salesPerProductPerPeriod("111",new SimpleCalendar(2016,11,2),new SimpleCalendar(2017,2,1)));
         
+        OrderService os = new OrderService(em);
 
+        cs.RemoveOnSale(cs.findProductByEOF("111").get(0));
+        System.out.println(cs.getStock("111"));
+        int orderid = os.createOrder("1234567890");
+        os.addLineItem(orderid, "1234567890", "111", 15);
+        System.out.println(cs.getStock("111"));
+        os.addLineItem(orderid, "1234567890", "111", 5);
+        System.out.println(cs.getStock("111"));
+        System.out.println(os.calculateOrder(orderid));
+        
+        
         em.close();
-        emf.close();
+        //JPAUtil.closeEntityManagerFactory();
        
     }
 }

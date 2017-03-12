@@ -99,7 +99,7 @@ public class Product {
 	}
 
 	@OneToMany (mappedBy = "product", cascade = CascadeType.ALL)
-	private Set<LineItem> lineItems = new HashSet<>();
+	private Set<LineItem> lineItems = new HashSet<LineItem>();
 	public Set<LineItem> getLineItems() {
 		return lineItems;
 	}

@@ -1,11 +1,13 @@
 package gr.aueb.mscis.sample.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import gr.aueb.mscis.sample.model.Lot;
 import gr.aueb.mscis.sample.model.OnSale;
@@ -141,6 +143,16 @@ public void UpdateOnSale(Product product, OnSale onsale) {
 		tx.begin();
 		product.setOnSale(null);
 		tx.commit();
+	}
+	
+	public int getStock(String eof) {
+		int result = 0;
+		List<Product> products = findProductByEOF(eof);
+		Set<Lot> lots = products.get(0).getLots();
+		for(Lot lot : lots)
+			result += lot.getQuantity();
+		
+		return result;
 	}
 	
 

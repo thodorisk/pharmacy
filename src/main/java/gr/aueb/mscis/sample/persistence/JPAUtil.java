@@ -32,6 +32,11 @@ public class JPAUtil {
     	
     	return getEntityManagerFactory().createEntityManager();
     }
+    
+    public static void closeEntityManagerFactory() {
+    	
+    	emf.close();
+    }
 
    
 }

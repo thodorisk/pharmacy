@@ -4,108 +4,45 @@ import gr.aueb.mscis.sample.model.Category;
 import gr.aueb.mscis.sample.model.LineItem;
 import gr.aueb.mscis.sample.model.Lot;
 import gr.aueb.mscis.sample.model.Product;
+import gr.aueb.mscis.sample.persistence.Initializer;
+import gr.aueb.mscis.sample.persistence.JPAUtil;
 import gr.aueb.mscis.sample.service.CatalogService;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class ProductServiceTest {
 
-    private EntityManagerFactory emf;
-    private EntityManager em;
+    private Initializer dataHelper;
 
     @Before
-    public void setUp() {
-        emf = Persistence.createEntityManagerFactory("pharmacy");
-        em = emf.createEntityManager();
-        initializeData();
-    }
-
-    @After
-    public void tearDown() {
-        em.close();
-        emf.close();
-    }
-
-
-    public void  eraseData() {
-
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        Query query;
-
-        query = em.createNativeQuery("DELETE FROM lots");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM products");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM lines");
-        query.executeUpdate();
-
-        query = em.createNativeQuery("DELETE FROM categories");
-        query.executeUpdate();
-        tx.commit();
-    }
-
-    public void initializeData() {
-        eraseData();
-
-        Product deponproduct = new Product("Depon", "111", 5.00);
-
-        //Add stock to the above products
-        Lot deponfirstlot = new Lot(601, 10);
-        deponfirstlot.setProduct(deponproduct);
-
-        Lot deponsecondlot = new Lot(602, 11);
-        deponsecondlot.setProduct(deponproduct);
-
-        deponproduct.getLots().add(deponfirstlot);
-        deponproduct.getLots().add(deponsecondlot);
-
-        //Add the above product to a lineitem
-        LineItem firstlineitem = new LineItem(5);
-        firstlineitem.setProduct(deponproduct);
-
-        deponproduct.getLineItems().add(firstlineitem);
-
-        //Add a category to the above product
-        Category category1 = new Category("Paracetamol");
-        deponproduct.setCategory(category1);
-
-        category1.getProducts().add(deponproduct);
-
-
-
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        em.persist(deponfirstlot);
-        em.persist(deponsecondlot);
-        em.persist(deponproduct);
-        em.persist(firstlineitem);
-        em.persist(category1);
-        tx.commit();
+    public void setUpJpa() {
+        dataHelper = new Initializer();
+        dataHelper.prepareData();
     }
 
     @Test
     public void productSizeTest() {
+    	int EXPECTED_NUMBER_OF_PRODUCTS = 4;
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findAllProducts();
         assertNotNull(products);
-        assertEquals(1,products.size());
+        assertEquals(EXPECTED_NUMBER_OF_PRODUCTS,products.size());
 
     }
 
     @Test
     public void productLotsSizeTest() {
+    	int EXPECTED_PRODUCT_LOTS_SIZE = 2;
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findAllProducts();
 
@@ -114,43 +51,49 @@ public class ProductServiceTest {
         //check Lots size
         Set<Lot> productLots = products.get(0).getLots();
         assertNotNull(productLots);
-        assertEquals(2, productLots.size());
+        assertEquals(EXPECTED_PRODUCT_LOTS_SIZE, productLots.size());
     }
 
     @Test
     public void lineItemSizeProductTest(){
+    	int EXPECTED_LINEITEMS_OF_FIRSTPRODUCT = 2;
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findAllProducts();
-
         Set<LineItem> productLineItems = products.get(0).getLineItems();
         assertNotNull(productLineItems);
-        assertEquals(1, productLineItems.size());
+        assertEquals(EXPECTED_LINEITEMS_OF_FIRSTPRODUCT, productLineItems.size());
     }
 
     @Test
     public void lineItemProductDataTest(){
+    	int EXPECTED_QUANTITY_OF_FIRST_LINEITEMPRODUCT = 12;
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
-        List<Product> products = cs.findAllProducts();
+        List<Product> products = cs.findProductByName("Depon");
 
         Set<LineItem> productLineItems = products.get(0).getLineItems();
-
-        LineItem[] productLineItemsArray = productLineItems.toArray(new LineItem[productLineItems.size()]);
-        assertTrue(productLineItemsArray[0].getQuantity() == 5);
+        List <LineItem> productLineItemsArray = new ArrayList(productLineItems);
+        assertTrue(productLineItemsArray.get(0).getQuantity() == 12);
+        assertEquals(EXPECTED_QUANTITY_OF_FIRST_LINEITEMPRODUCT, productLineItemsArray.get(0).getQuantity());
     }
 
     @Test
     public void productCategoryDataTest(){
+    	String EXPECTED_CATEGORY = "Drugs";
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findAllProducts();
-
+        
         Category productCategory = products.get(0).getCategory();
         assertNotNull(productCategory);
-        assertEquals("Paracetamol", productCategory.getDescription());
+        assertEquals(EXPECTED_CATEGORY, productCategory.getDescription());
 
     }
 
     @Test
     public void productLotsDataTest() {
+    	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findAllProducts();
 
@@ -158,11 +101,6 @@ public class ProductServiceTest {
         Set<Lot> productLots = products.get(0).getLots();
 
         Lot[] productLotsArray = productLots.toArray(new Lot[productLots.size()]);
-//        assertEquals(602, productLotsArray[0].getLotno());
-//        assertEquals(11, productLotsArray[0].getQuantity());
-//
-//        assertEquals(601, productLotsArray[1].getLotno());
-//        assertEquals(10, productLotsArray[1].getQuantity());
 
         assertTrue(productLotsArray[0].getLotno() == 602 || productLotsArray[0].getLotno() == 601);
         assertTrue(productLotsArray[1].getLotno() == 602 || productLotsArray[1].getLotno() == 601);
