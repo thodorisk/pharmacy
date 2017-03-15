@@ -89,8 +89,8 @@ public class ProductServiceTest {
         assertTrue(productLotsArray[0].getLotno() == 602 || productLotsArray[0].getLotno() == 601);
         assertTrue(productLotsArray[1].getLotno() == 602 || productLotsArray[1].getLotno() == 601);
 
-        assertTrue(productLotsArray[0].getQuantity() == 0 || productLotsArray[0].getQuantity() == 1);
-        assertTrue(productLotsArray[1].getQuantity() == 0 || productLotsArray[1].getQuantity() == 1);
+        assertTrue(productLotsArray[0].getQuantity() == 0 || productLotsArray[0].getQuantity() == 9);
+        assertTrue(productLotsArray[1].getQuantity() == 0 || productLotsArray[1].getQuantity() == 9);
 
     }
 
@@ -135,15 +135,6 @@ public class ProductServiceTest {
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findProductByEOF("120");
         assertEquals(EXPECTED_NAME, products.get(0).getName());
-    }
-
-    @Test
-    public void findProductByIdTest(){
-        String EXPECTED_NAME = "Depon";
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        CatalogService cs = new CatalogService(em);
-        Product product = cs.findProductById(7);
-        assertEquals(EXPECTED_NAME, product.getName());
     }
 
 
