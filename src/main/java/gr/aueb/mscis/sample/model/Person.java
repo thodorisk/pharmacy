@@ -4,14 +4,15 @@ package gr.aueb.mscis.sample.model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import gr.aueb.mscis.sample.contacts.EmailAddress;
+
 @Embeddable
 public class Person {
     @Column(name="firstname")
     private String firstName;
     @Column(name="lastname")
     private String lastName;
-    @Column(name="email", nullable = false)
-    private String email;
+
     @Column(name="phone")
     private String phone;
     @Column(name="vatNo")
@@ -19,10 +20,9 @@ public class Person {
 
     public Person() { }
 
-    Person (String firstName, String lastName, String email, String phone, String vatNo) {
+    Person (String firstName, String lastName, EmailAddress email, String phone, String vatNo) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.phone = phone;
         this.vatNo = vatNo;
     }
@@ -41,14 +41,6 @@ public class Person {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setPhone(String phone) {
@@ -71,7 +63,6 @@ public class Person {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
@@ -88,11 +79,6 @@ public class Person {
 		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
 				return false;
@@ -115,6 +101,9 @@ public class Person {
 			return false;
 		return true;
 	}
+
+
+	
     
     
 

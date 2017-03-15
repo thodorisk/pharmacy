@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import gr.aueb.mscis.sample.contacts.Address;
+import gr.aueb.mscis.sample.contacts.EmailAddress;
 
 
 @Entity
@@ -31,6 +32,10 @@ public class Pharmacist  {
     @JoinColumn (name="cart_id")
     private Cart cart;
     
+    @org.hibernate.annotations.Type(
+            type="gr.aueb.mscis.sample.persistence.EMailCustomType")
+    @Column(name="email", length=40, nullable = false)
+    private EmailAddress email;
 
     public Person getPerson() {
 		return person;
@@ -52,12 +57,12 @@ public class Pharmacist  {
 
 
     public Pharmacist(String firstName,
-                    String lastName, String email, Address address, String phone, String vatNo) {
+                    String lastName, EmailAddress email, Address address, String phone, String vatNo) {
         person.setFirstName(firstName);
         person.setLastName(lastName);
-        person.setEmail(email);
         person.setPhone(phone);
         person.setVatNo(vatNo);
+        this.email = email == null ? null : email;
         this.address = address == null ? null : new Address(address);
     }
 
@@ -85,15 +90,15 @@ public class Pharmacist  {
         return person.getLastName();
     }
 
-    public void setEmail(String email) {
-        person.setEmail(email);
-    }
+    public EmailAddress getEmail() {
+		return email;
+	}
 
-    public String getEmail() {
-        return person.getEmail();
-    }
+	public void setEmail(EmailAddress email) {
+		this.email = email;
+	}
 
-    public void setAccount(Account account) {
+	public void setAccount(Account account) {
 		this.account = account;
 	}
 

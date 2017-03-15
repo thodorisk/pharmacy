@@ -31,9 +31,7 @@ public class LineItem {
     public Product getProduct() {return product;}
     public void setProduct(Product product) {this.product = product;}
 
-    @ManyToOne (cascade = {CascadeType.ALL})
-	@JoinColumn (name = "cart_id")
-	private Cart cart;
+
 
     public LineItem(){
 
@@ -65,13 +63,6 @@ public class LineItem {
 	public void setLots(Set<Lot> lots) {
 		this.lots = lots;
 	}
-	public Cart getCart() {
-		return cart;
-	}
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
-
     
 
 }

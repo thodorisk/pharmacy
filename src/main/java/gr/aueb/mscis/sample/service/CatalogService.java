@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import gr.aueb.mscis.sample.model.CartItem;
 import gr.aueb.mscis.sample.model.Lot;
 import gr.aueb.mscis.sample.model.OnSale;
 import gr.aueb.mscis.sample.model.Product;
@@ -121,6 +122,17 @@ public class CatalogService {
 		return results;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Lot findLotByLotNumber (int lotno) {
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Lot result = null;
+		result = (Lot) em.createQuery("select l from Lot l where l.lotno like :name")
+				.setParameter("name",Integer.valueOf(lotno)).getSingleResult();
+		tx.commit();
+		return result;
+	}
+	
 	public void addLot(Product product, Lot newlot) {
 		
 		EntityTransaction tx = em.getTransaction();
@@ -128,6 +140,8 @@ public class CatalogService {
 		product.getLots().add(newlot);
 		tx.commit();
 	}
+	
+	
 	
 public void UpdateOnSale(Product product, OnSale onsale) {
 		
@@ -153,6 +167,20 @@ public void UpdateOnSale(Product product, OnSale onsale) {
 			result += lot.getQuantity();
 		
 		return result;
+	}
+	
+	public CartItem findCartItemById(int id) {
+
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		CartItem cartitem = null;
+		try {
+			cartitem = em.find(CartItem.class, id);
+			tx.commit();
+		} catch (NoResultException ex) {
+			tx.rollback();
+		}
+		return cartitem;
 	}
 	
 

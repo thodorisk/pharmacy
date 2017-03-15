@@ -8,7 +8,7 @@ public class EmailAddress {
         this.value = email;
     }
 
-    public String getEmailAddress() {
+    public String getAddress() {
         return value;
     }
 
@@ -31,8 +31,8 @@ public class EmailAddress {
         }
 
         EmailAddress theEmail = (EmailAddress) other;
-        return value == null ? theEmail.getEmailAddress() == null
-                : value.equals(theEmail.getEmailAddress());
+        return value == null ? theEmail.getAddress() == null
+                : value.equals(theEmail.getAddress());
     }
 
     @Override

@@ -41,6 +41,10 @@ public class Order {
     public void setLineItems (Set <LineItem> lineItems) {this.lineItems = lineItems;}
 
 
+    @ManyToOne (cascade = {CascadeType.ALL})
+	@JoinColumn (name = "cart_id")
+	private Cart cart;
+    
     public Order() {
     }
 
@@ -87,6 +91,13 @@ public class Order {
     
     public void setAccount(Account account) {
 		this.account = account;
+	}
+    
+	public Cart getCart() {
+		return cart;
+	}
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 	@Override

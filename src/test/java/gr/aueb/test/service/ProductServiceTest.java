@@ -1,9 +1,6 @@
 package gr.aueb.test.service;
 
-import gr.aueb.mscis.sample.model.Category;
-import gr.aueb.mscis.sample.model.LineItem;
-import gr.aueb.mscis.sample.model.Lot;
-import gr.aueb.mscis.sample.model.Product;
+import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.persistence.Initializer;
 import gr.aueb.mscis.sample.persistence.JPAUtil;
 import gr.aueb.mscis.sample.service.CatalogService;
@@ -56,26 +53,13 @@ public class ProductServiceTest {
 
     @Test
     public void lineItemSizeProductTest(){
-    	int EXPECTED_LINEITEMS_OF_FIRSTPRODUCT = 2;
+    	int EXPECTED_LINEITEMS_OF_FIRSTPRODUCT = 4;
     	EntityManager em = JPAUtil.getCurrentEntityManager();
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findAllProducts();
         Set<LineItem> productLineItems = products.get(0).getLineItems();
         assertNotNull(productLineItems);
         assertEquals(EXPECTED_LINEITEMS_OF_FIRSTPRODUCT, productLineItems.size());
-    }
-
-    @Test
-    public void lineItemProductDataTest(){
-    	int EXPECTED_QUANTITY_OF_FIRST_LINEITEMPRODUCT = 12;
-    	EntityManager em = JPAUtil.getCurrentEntityManager();
-        CatalogService cs = new CatalogService(em);
-        List<Product> products = cs.findProductByName("Depon");
-
-        Set<LineItem> productLineItems = products.get(0).getLineItems();
-        List <LineItem> productLineItemsArray = new ArrayList(productLineItems);
-        assertTrue(productLineItemsArray.get(0).getQuantity() == 12);
-        assertEquals(EXPECTED_QUANTITY_OF_FIRST_LINEITEMPRODUCT, productLineItemsArray.get(0).getQuantity());
     }
 
     @Test
@@ -105,8 +89,62 @@ public class ProductServiceTest {
         assertTrue(productLotsArray[0].getLotno() == 602 || productLotsArray[0].getLotno() == 601);
         assertTrue(productLotsArray[1].getLotno() == 602 || productLotsArray[1].getLotno() == 601);
 
-        assertTrue(productLotsArray[0].getQuantity() == 10 || productLotsArray[0].getQuantity() == 11);
-        assertTrue(productLotsArray[1].getQuantity() == 10 || productLotsArray[1].getQuantity() == 11);
+        assertTrue(productLotsArray[0].getQuantity() == 0 || productLotsArray[0].getQuantity() == 1);
+        assertTrue(productLotsArray[1].getQuantity() == 0 || productLotsArray[1].getQuantity() == 1);
 
     }
+
+    @Test
+    public void saveProductTest(){
+        int EXPECTED_QUANTITY_OF_PRODUCTS = 5;
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        CatalogService cs = new CatalogService(em);
+        Product amoxilproduct = new Product("Amoxil", "000", 8.70);
+        cs.save(amoxilproduct);
+        List<Product> products = cs.findAllProducts();
+
+        assertEquals(EXPECTED_QUANTITY_OF_PRODUCTS, products.size());
+    }
+
+    @Test
+    public void deleteProductTest(){
+        int EXPECTED_QUANTITY_OF_PRODUCTS = 5;
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        CatalogService cs = new CatalogService(em);
+        Product amoxilproduct = new Product("Amoxil", "000", 8.70);
+        cs.save(amoxilproduct);
+        cs.deleteProduct(33);
+        List<Product> products = cs.findAllProducts();
+
+        assertEquals(EXPECTED_QUANTITY_OF_PRODUCTS, products.size());
+    }
+
+    @Test
+    public void findProductByNameTest(){
+        String EXPECTED_NAME = "Depon";
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        CatalogService cs = new CatalogService(em);
+        List<Product> products = cs.findProductByName("Depon");
+        assertEquals(EXPECTED_NAME, products.get(0).getName());
+    }
+
+    @Test
+    public void findProductByEofTest(){
+        String EXPECTED_NAME = "Panadol";
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        CatalogService cs = new CatalogService(em);
+        List<Product> products = cs.findProductByEOF("120");
+        assertEquals(EXPECTED_NAME, products.get(0).getName());
+    }
+
+    @Test
+    public void findProductByIdTest(){
+        String EXPECTED_NAME = "Depon";
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        CatalogService cs = new CatalogService(em);
+        Product product = cs.findProductById(7);
+        assertEquals(EXPECTED_NAME, product.getName());
+    }
+
+
 }

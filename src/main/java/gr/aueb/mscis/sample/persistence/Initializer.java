@@ -1,11 +1,13 @@
 package gr.aueb.mscis.sample.persistence;
 
+import gr.aueb.mscis.sample.contacts.EmailAddress;
 import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.*;
 import gr.aueb.mscis.sample.util.SimpleCalendar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -28,8 +30,6 @@ public class Initializer  {
         
         query = em.createNativeQuery("DELETE FROM lines");
         query.executeUpdate();
-
-
         
         query = em.createNativeQuery("DELETE FROM lots");
         query.executeUpdate();
@@ -37,6 +37,12 @@ public class Initializer  {
         query = em.createNativeQuery("DELETE FROM pharmacists");
         query.executeUpdate();
    
+        query = em.createNativeQuery("DELETE FROM cartitems");
+        query.executeUpdate();
+        
+        query = em.createNativeQuery("DELETE FROM orders");
+        query.executeUpdate();
+        
         query = em.createNativeQuery("DELETE FROM cart");
         query.executeUpdate();
         
@@ -45,12 +51,7 @@ public class Initializer  {
         
         query = em.createNativeQuery("DELETE FROM onsales");
         query.executeUpdate();
-        
-        query = em.createNativeQuery("DELETE FROM orders");
-        query.executeUpdate();
-
-
-        
+       
         query = em.createNativeQuery("DELETE FROM accounts");
         query.executeUpdate();
 
@@ -68,8 +69,8 @@ public class Initializer  {
         EntityManager em = JPAUtil.createEntityManager();
         
         //Create Pharmacists
-        Pharmacist terkap = new Pharmacist("Tereza","Kaparakou","tkaparakou@aueb.gr",null,"2109999999", "1234567890");
-        Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis","thkaragiannis@aueb.gr",null,"2109999998", "9876543210");
+        Pharmacist terkap = new Pharmacist("Tereza","Kaparakou",new EmailAddress("tkaparakou@aueb.gr"),null,"2109999999", "1234567890");
+        Pharmacist thokar = new Pharmacist("Thodoris","Karagiannis",new EmailAddress("thkaragiannis@aueb.gr"),null,"2109999998", "9876543210");
         
         
         //Create Pharmacists accounts
@@ -83,7 +84,7 @@ public class Initializer  {
         thokar_acc.setPharmacist(thokar);
         
         //Create products
-        Product deponproduct = new Product("Depon", "111", 5.50);
+        Product deponproduct = new Product("Depon", "111", 5.0);
         Product comtrexproduct = new Product("Comtrex", "112", 7.00);
         Product vitamincproduct = new Product("Vitamin C", "113", 8.00);
 
@@ -269,13 +270,43 @@ public class Initializer  {
         OrderService os = new OrderService(em);
 
         cs.RemoveOnSale(cs.findProductByEOF("111").get(0));
-        System.out.println(cs.getStock("111"));
-        int orderid = os.createOrder("1234567890");
-        os.addLineItem(orderid, "1234567890", "111", 15);
-        System.out.println(cs.getStock("111"));
-        os.addLineItem(orderid, "1234567890", "111", 5);
-        System.out.println(cs.getStock("111"));
-        System.out.println(os.calculateOrder(orderid));
+        cs.RemoveOnSale(cs.findProductByEOF("112").get(0));
+        
+//        System.out.println(cs.getStock("111"));
+//        int orderid = os.createCartOrder("1234567890");
+//        os.addLineItem(orderid, "111", 15);
+//        System.out.println(cs.getStock("111"));
+//        os.addLineItem(orderid, "111", 5);
+//        System.out.println(cs.getStock("111"));
+//        System.out.println(os.calculateOrder(orderid));
+//        System.out.println(cs.getStock("111"));
+
+        int orderid = os.createCartOrder("1234567890");
+        System.out.println(orderid + "	order__id CREATION");
+        
+        CartItem firstcartitem = os.updateCartItem(orderid, "111", 6, -1);
+        CartItem secondcartitem = os.updateCartItem(orderid, "112", 3, -1);
+        //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
+        
+        List <CartItem> allCartItems = new ArrayList<CartItem>();
+        allCartItems.add(firstcartitem);
+        allCartItems.add(secondcartitem);
+        //allCartItems.add(updatefirstcartitem);
+        System.out.println(os.completeOrder(allCartItems) + "	Total");
+        
+        /////////////////////NEW ORDER/////////////////////////////////////
+        int orderid2 = os.createCartOrder("1234567890");
+        System.out.println(orderid2 + "	order__id CREATION");
+        
+        CartItem firstcartitem2 = os.updateCartItem(orderid2, "111", 6, -1);
+        CartItem secondcartitem2 = os.updateCartItem(orderid2, "112", 3, -1);
+        //CartItem updatefirstcartitem2 = os.updateCartItem(orderid2, "111", 1, firstcartitem2.getId());
+        
+        List <CartItem> allCartItems2 = new ArrayList<CartItem>();
+        allCartItems2.add(firstcartitem2);
+        allCartItems2.add(secondcartitem2);
+        //allCartItems.add(updatefirstcartitem2);
+        System.out.println(os.completeOrder(allCartItems2) + "	Total");
         
         
         em.close();

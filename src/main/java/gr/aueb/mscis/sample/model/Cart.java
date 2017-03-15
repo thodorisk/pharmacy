@@ -25,8 +25,10 @@ public class Cart {
     private Pharmacist pharmacist;
     
 	@OneToMany(mappedBy="cart")
-    private Set<LineItem> lineitems = new HashSet<LineItem>();
-    
+    private Set<Order> orders = new HashSet<Order>();
+	    
+	@OneToMany(mappedBy="cart")
+    private Set<CartItem> cartitems = new HashSet<CartItem>();
 
     public Pharmacist getPharmacist() {
         return pharmacist;
@@ -35,8 +37,6 @@ public class Cart {
     public void setPharmacist(Pharmacist pharmacist) {
 		this.pharmacist = pharmacist;
 	}
-
-
 
 	public Cart(){
 
@@ -64,14 +64,21 @@ public class Cart {
         this.cartDate = cartDate;
     }
 
-	public Set<LineItem> getLineitems() {
-		return lineitems;
+	public Set<Order> getOrders() {
+		return orders;
 	}
 
-	public void setLineitems(Set<LineItem> lineitems) {
-		this.lineitems = lineitems;
+	public void setOrders(Set<Order> orders) {
+		this.orders = orders;
 	}
-    
-    
 
+	public Set<CartItem> getCartitems() {
+		return cartitems;
+	}
+
+	public void setCartitems(Set<CartItem> cartitems) {
+		this.cartitems = cartitems;
+	}
+	
+	
 }
