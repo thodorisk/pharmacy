@@ -6,12 +6,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Created by thodoriskaragiannis on 16/03/2017.
- */
+
 public class OnSaleTest {
     @Test
-    public void getDiscount(){
+    public void getDiscountTest(){
         Double EXPECTED_DISCOUNT = 5.0;
         OnSale os = new OnSale();
         Assert.assertNotNull(os);
@@ -20,7 +18,7 @@ public class OnSaleTest {
     }
 
     @Test
-    public void getId(){
+    public void getIdTest(){
         int EXPECTED_ID = 5;
         OnSale os = new OnSale();
         Assert.assertNotNull(os);
@@ -29,12 +27,20 @@ public class OnSaleTest {
     }
 
     @Test
-    public void getStartdate(){
-
+    public void getStartDateTest(){
+        OnSale os = new OnSale();
+        Assert.assertNotNull(os);
+        SimpleCalendar march_20_2017 = new SimpleCalendar(2017, 3 , 20);
+        os.setStartdate(march_20_2017);
+        Assert.assertEquals(march_20_2017, os.getStartdate());
     }
 
     @Test
-    public void getEnddate(){
-
+    public void getEndDateTest(){
+        OnSale os = new OnSale();
+        Assert.assertNotNull(os);
+        SimpleCalendar march_20_2017 = new SimpleCalendar(2017, 3 , 20);
+        os.setEnddate(march_20_2017);
+        Assert.assertEquals(march_20_2017, os.getEnddate());
     }
 }
