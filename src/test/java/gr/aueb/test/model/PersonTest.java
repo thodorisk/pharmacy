@@ -10,7 +10,7 @@ public class PersonTest {
     @Test
     public void addNullForPhone() {
     	Person person = new Person();                    
-    	person.setPhone(null);;
+    	person.setPhone(null);
         Assert.assertEquals(null,person.getPhone());
         Assert.assertSame(null,person.getPhone());
     }

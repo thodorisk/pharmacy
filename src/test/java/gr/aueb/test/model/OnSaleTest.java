@@ -20,6 +20,15 @@ public class OnSaleTest {
     }
 
     @Test
+    public void getId(){
+        int EXPECTED_ID = 5;
+        OnSale os = new OnSale();
+        Assert.assertNotNull(os);
+        os.setId(5);
+        Assert.assertEquals(EXPECTED_ID, os.getId());
+    }
+
+    @Test
     public void getStartdate(){
 
     }
