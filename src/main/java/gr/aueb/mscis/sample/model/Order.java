@@ -113,6 +113,7 @@ public class Order {
                 .append(orderdate, other.orderdate)
                 .append(status, other.status)
                 .append(total, other.total)
+                .append(id, other.id)
                 .isEquals();
     }
 
@@ -121,6 +122,7 @@ public class Order {
         return new HashCodeBuilder().append(orderdate)
                 .append(status)
                 .append(total)
+                .append(id)
                 .toHashCode();
     }
 }

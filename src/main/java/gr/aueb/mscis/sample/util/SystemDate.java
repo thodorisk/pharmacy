@@ -15,9 +15,9 @@ public class SystemDate {
     /**
      * Απαγορεύουμε τη δημιουργία αντικείμενων.
      */
-    protected SystemDate() { }
+	public SystemDate() { }
 
-    private static SimpleCalendar stub;
+    public static SimpleCalendar stub;
 
 
     /**

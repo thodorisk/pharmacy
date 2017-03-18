@@ -64,13 +64,13 @@ public class AddressTest {
         address2.setCity("Athens");
         equalsTester.bothObjectsHaveSameState(address2);
         
-        address.setCountry("Greece");
-        equalsTester.bothObjectsHaveSameState(address2);
+        address.setCountry("Portugal");
+        equalsTester.objectsHaveDifferentState(address2);
         
         address2.setCountry("Italy");
         equalsTester.objectsHaveDifferentState(address2);
         
-        address2.setCountry("Greece");
+        address2.setCountry("Portugal");
         equalsTester.bothObjectsHaveSameState(address2);
         
         address.setZipCode(111);

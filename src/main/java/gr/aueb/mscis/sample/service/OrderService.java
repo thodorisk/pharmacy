@@ -62,7 +62,7 @@ public class OrderService {
 
 	public List<LineItem> salesOfProductPerPeriod(String eof, SimpleCalendar startDate, SimpleCalendar endDate) {
 
-		try {
+		
 
 			if (startDate==null || endDate==null) {
 				throw new LibraryException("Start Date or End Date cannot be null.");
@@ -71,10 +71,8 @@ public class OrderService {
 			if (startDate.after(endDate)) {
 				throw new LibraryException("End Date cannot precede Start Date.");
 			}
-		}
-		catch(LibraryException e) {
-			return null;
-		}
+		
+		
 		List<LineItem> results = new ArrayList<LineItem>();
 		CatalogService cs = new CatalogService(em);
 		List<LineItem> tempresults = new ArrayList<LineItem>(cs.findProductByEOF(eof).get(0).getLineItems());
@@ -98,13 +96,19 @@ public class OrderService {
 		PharmacistService ps = new PharmacistService(em);
 		List<Pharmacist> pharmacist = ps.findPharmacistsByAFM(afm);
 		results = new ArrayList<Order>(pharmacist.get(0).getAccount().getOrders());
+		return results;
+	}
+	
+	public List<CartItem> showCartByPharmacist(String afm) {
 
+		List<CartItem> results = null;
+		PharmacistService ps = new PharmacistService(em);
+		List<Pharmacist> pharmacist = ps.findPharmacistsByAFM(afm);
+		results = new ArrayList<CartItem>(pharmacist.get(0).getCart().getCartitems());
 		return results;
 	}
 
 	public List<Order> findOrdersByPharmacist(String afm, SimpleCalendar startDate, SimpleCalendar endDate) {
-
-		try {
 
 			if (startDate==null || endDate==null) {
 				throw new LibraryException("Start Date or End Date cannot be null.");
@@ -113,10 +117,7 @@ public class OrderService {
 			if (startDate.after(endDate)) {
 				throw new LibraryException("End Date cannot precede Start Date.");
 			}
-		}
-		catch(LibraryException e) {
-			return null;
-		}
+				
 		List<Order> results = new ArrayList<Order>();
 		PharmacistService ps = new PharmacistService(em);
 		List<Pharmacist> pharmacist = ps.findPharmacistsByAFM(afm);
@@ -136,8 +137,8 @@ public class OrderService {
 	}
 
 	//Υπολογισμός του συνολικού κόστους της παραγγελίας βάση
-	//της τιμής, της ποσότητας και της έκπτωσης (αν υπάρχει)
-	//σε κάθε προϊόν
+	//της τιμής, της ποσότητας και της έκπτωσης 
+	//(αν υπάρχει σε συγκεκριμένο χρονικό διάστημα) σε κάθε προϊόν
 	public double calculateOrder(int order_id) {
 		double total = 0.0;
 		Order order_found = findOrderById(order_id);
@@ -145,7 +146,11 @@ public class OrderService {
 		for (LineItem lineitem : lineitems) 
 		{	
 			double finalprice = 0.0;
-			if (lineitem.getProduct().getOnSale() != (null))
+			if ((lineitem.getProduct().getOnSale() != null) && order_found.getOrderdate().equals(lineitem.getProduct().getOnSale().getStartdate())  ||
+					((lineitem.getProduct().getOnSale() != null) && order_found.getOrderdate().equals(lineitem.getProduct().getOnSale().getEnddate())) ||
+					(((lineitem.getProduct().getOnSale() != null)	&& (order_found.getOrderdate().before(lineitem.getProduct().getOnSale().getEnddate()))) &&
+					(order_found.getOrderdate().after(lineitem.getProduct().getOnSale().getStartdate()))))
+			//if (lineitem.getProduct().getOnSale() != null) 			
 			{
 				finalprice = (lineitem.getProduct().getPrice()) - (lineitem.getProduct().getPrice() * lineitem.getProduct().getOnSale().getDiscount() / 100.0);
 				total += finalprice * lineitem.getQuantity();
@@ -271,8 +276,29 @@ public class OrderService {
 		}
 
 	}
+	
+	//Αφαίρεση ενός προϊόντος από το καλάθι
+	public void removeCartItem(int cartitem_id) {
+		CatalogService cs = new CatalogService(em);
+		CartItem cartItem_found = cs.findCartItemById(cartitem_id);
+		Cart cart_found = cartItem_found.getCart();
+		//cartItem_found.setCart(null);
+		cart_found.getCartitems().remove(cartItem_found);
+		EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
+			em.persist(cart_found);
+			em.remove(cartItem_found);
+			tx.commit();
+		}
+		catch (NoResultException ex) {
+			tx.rollback();
+		}
+		
+	}
+	
 
-	//Δημιουργία καλαθιού και προσωρινής παραγγελίας με κατάσταση PENDING
+	//Δημιουργία καλαθιού και προσωρινής παραγγελίας σε κατάσταση PENDING
 	public int createCartOrder(String pharmacist_afm) {
 
 		//Find account based on AFM of a pharmacist
@@ -306,6 +332,13 @@ public class OrderService {
 		return neworder.getId();
 	}
 	
+	//Ολοκλήρωση της παραγγελίας. 
+	//Τα προϊόντα του καλαθιού μετατρέπονται σε γραμμές
+	//παραγγελίας, υπολογίζεται το συνολικό κόστος της 
+	//παραγγελίας βάση της κάθε γραμμής παραγγελίας.
+	//Τέλος η παραγγελία αλλάζει κατάσταση σε 
+	//COMPLETED και το καλάθι του συγκεκριμένου πελάτη 
+	//αδειάζει.
 	public double completeOrder(List<CartItem> listofcartitems) {
 		
 		Cart cart_found = listofcartitems.get(0).getCart();

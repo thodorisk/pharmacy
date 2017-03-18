@@ -54,7 +54,7 @@ public class NotificationService {
         		pharmacists.add(li.getOrder().getAccount().getPharmacist());
         	}
         }
-        catch (LibraryException e) {}
+        catch (LibraryException e) {throw new LibraryException("There are no pharmacists with defective batch.");}
             
         
         for (Pharmacist pharmacist : pharmacists) {

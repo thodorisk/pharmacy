@@ -15,10 +15,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import gr.aueb.mscis.sample.persistence.JPAUtil;
-
+import gr.aueb.mscis.sample.service.OrderService;
 import gr.aueb.mscis.sample.persistence.Initializer;
 
 import gr.aueb.mscis.sample.model.Lot;
+import gr.aueb.mscis.sample.model.Order;
 import gr.aueb.mscis.sample.model.Product;
 
 
@@ -47,7 +48,6 @@ public class JPAQueriesTest {
         TypedQuery<Product> query = em.createQuery("select p from Product p", Product.class);
         List<Product> results = query.getResultList();      
         Assert.assertEquals(EXPECTED_PRODUCT_NUMBER, results.size());
-        
     }
     
 

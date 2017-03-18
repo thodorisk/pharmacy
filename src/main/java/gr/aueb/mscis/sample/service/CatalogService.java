@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import gr.aueb.mscis.sample.model.Cart;
 import gr.aueb.mscis.sample.model.CartItem;
 import gr.aueb.mscis.sample.model.Lot;
 import gr.aueb.mscis.sample.model.OnSale;
@@ -183,5 +184,4 @@ public void UpdateOnSale(Product product, OnSale onsale) {
 		return cartitem;
 	}
 	
-
 }
