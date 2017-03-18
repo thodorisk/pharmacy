@@ -4,6 +4,8 @@ import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.persistence.Initializer;
 import gr.aueb.mscis.sample.persistence.JPAUtil;
 import gr.aueb.mscis.sample.service.CatalogService;
+import gr.aueb.mscis.sample.util.SimpleCalendar;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import javax.persistence.*;
@@ -135,6 +137,36 @@ public class ProductServiceTest {
         CatalogService cs = new CatalogService(em);
         List<Product> products = cs.findProductByEOF("120");
         assertEquals(EXPECTED_NAME, products.get(0).getName());
+    }
+
+    @Test
+    public void addLotTest(){
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Product product1 = new Product("Aspirin","999", 3.0);
+        Lot lot1 = new Lot(987654, 88);
+        CatalogService cs = new CatalogService(em);
+        cs.addLot(product1, lot1);
+        assertEquals(lot1.getLotno(), new ArrayList<Lot>(product1.getLots()).get(0).getLotno());
+    }
+
+    @Test
+    public void UpdateOnSaleTest(){
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Product product1 = new Product("Aspirin","999", 3.0);
+        OnSale sale1 = new OnSale(30.0,new SimpleCalendar(2017,3,1),new SimpleCalendar(2017,4,1));
+        CatalogService cs = new CatalogService(em);
+        cs.UpdateOnSale(product1, sale1);
+        assertEquals(sale1.getDiscount(), product1.getOnSale().getDiscount());
+    }
+
+    @Test
+    public void getStockTest(){
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+        Product product1 = new Product("Aspirin","999", 3.0);
+        Lot lot1 = new Lot(987654, 88);
+        CatalogService cs = new CatalogService(em);
+        cs.addLot(product1, lot1);
+        assertEquals(lot1.getQuantity(), new ArrayList<Lot>(product1.getLots()).get(0).getQuantity());
     }
 
 
