@@ -62,6 +62,39 @@ public class ProductTest {
         lotBidirectionalAssociationInvariant(product2);        
     }
     
+    @Test
+    public void hashcodeEqualsTest() {
+    	Product product = new Product();
+    	Product product2 = new Product();
+    	product.setId(590);
+    	product.setName("Ponstan");
+    	product.setEofn("876");
+    	product.setPrice(5.40);
+    	product2.setId(590);
+    	product2.setName("Ponstan");
+    	product2.setEofn("876");
+    	product2.setPrice(5.40);
+        Assert.assertEquals(product,product2);
+        Assert.assertEquals(product.hashCode(),product2.hashCode());
+        Assert.assertTrue(product.equals(product2));
+    }
+    
+    @Test
+    public void hashcodeNotEqualsTest() {
+    	Product product = new Product();
+    	Product product2 = new Product();
+    	product.setId(590);
+    	product.setName("Ponstan");
+    	product.setEofn("876");
+    	product.setPrice(5.40);
+    	product2.setId(591);
+    	product2.setName("Sithromax");
+    	product2.setEofn("678");
+    	product2.setPrice(5.5);
+        Assert.assertNotEquals(product,product2);
+        Assert.assertNotEquals(product.hashCode(),product2.hashCode());
+        Assert.assertFalse(product.equals(product2));
+    }
     
     private void lotBidirectionalAssociationInvariant(Product product) {
         for(Lot lot : product.getLots()) {
@@ -77,5 +110,7 @@ public class ProductTest {
         Assert.assertTrue(product.getLots().contains(lot));
         Assert.assertSame(product, lot.getProduct());
     }
+    
+    
     
 }

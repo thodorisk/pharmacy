@@ -45,7 +45,6 @@ public class CatalogService {
 
 		try {
 			Product product = em.getReference(Product.class, id);
-			System.out.println("Product deleted: " + product.getName());
 			em.remove(product);
 		} catch (EntityNotFoundException e) {
 			tx.rollback();

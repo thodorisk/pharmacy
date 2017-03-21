@@ -20,7 +20,7 @@ public class Person {
 
     public Person() { }
 
-    Person (String firstName, String lastName, EmailAddress email, String phone, String vatNo) {
+    public Person (String firstName, String lastName, EmailAddress email, String phone, String vatNo) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

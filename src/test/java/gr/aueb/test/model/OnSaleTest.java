@@ -1,5 +1,6 @@
 package gr.aueb.test.model;
 import gr.aueb.mscis.sample.model.OnSale;
+import gr.aueb.mscis.sample.model.Product;
 import gr.aueb.mscis.sample.util.SimpleCalendar;
 import org.junit.After;
 import org.junit.Assert;
@@ -42,5 +43,14 @@ public class OnSaleTest {
         SimpleCalendar march_20_2017 = new SimpleCalendar(2017, 3 , 20);
         os.setEnddate(march_20_2017);
         Assert.assertEquals(march_20_2017, os.getEnddate());
+    }
+    
+    @Test
+    public void getOnsaleProduct(){
+        OnSale os = new OnSale();
+        Assert.assertNotNull(os);
+        Product product = new Product();
+        os.setProduct(product);
+        Assert.assertEquals(product, os.getProduct());
     }
 }

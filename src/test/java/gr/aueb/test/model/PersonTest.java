@@ -3,6 +3,7 @@ package gr.aueb.test.model;
 import org.junit.Assert;
 import org.junit.Test;
 
+import gr.aueb.mscis.sample.contacts.EmailAddress;
 import gr.aueb.mscis.sample.model.Person;
 
 public class PersonTest {
@@ -71,6 +72,15 @@ public class PersonTest {
     public void addVatNo() {
     	String EXPECTED_VATNO = "987654321";
     	Person person = new Person();                    
+    	person.setVatNo("987654321");
+        Assert.assertNotEquals(null,person.getVatNo());
+        Assert.assertSame(EXPECTED_VATNO, person.getVatNo());
+    }
+    
+    @Test
+    public void personContructorTest() {
+    	String EXPECTED_VATNO = "987654321";
+    	Person person = new Person("Dionisis", "Koropoulis", new EmailAddress("dkoropoulis@aueb.gr"),"2106989598","999999999");                    
     	person.setVatNo("987654321");
         Assert.assertNotEquals(null,person.getVatNo());
         Assert.assertSame(EXPECTED_VATNO, person.getVatNo());

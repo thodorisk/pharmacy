@@ -14,6 +14,7 @@ import javax.persistence.*;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -160,7 +161,7 @@ public class OrderServiceTest {
     	int EXPECTED_ORDERS = 1; 
 	    EntityManager em = JPAUtil.getCurrentEntityManager();
 	    OrderService os = new OrderService(em);
-	    int total =  os.findOrdersByPharmacist("9876543210",new SimpleCalendar(2017,3,17),new SimpleCalendar(2017,3,17)).size();
+	    int total =  os.findOrdersByPharmacist("1234567890",new SimpleCalendar(2016,11,1),new SimpleCalendar(2016,11,1)).size();
     assertEquals(EXPECTED_ORDERS, total);
     }
     
@@ -196,7 +197,7 @@ public class OrderServiceTest {
     
     
     @Test
-    public void orderSizeTest() {
+    public void orderDateTest() {
     	SimpleCalendar EXPECTED_DATE_firstNovember2016 = new SimpleCalendar(2016,11,1); 
     	EntityManager em = JPAUtil.getCurrentEntityManager();
         OrderService cs = new OrderService(em);

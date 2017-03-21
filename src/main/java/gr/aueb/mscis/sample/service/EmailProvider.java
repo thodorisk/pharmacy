@@ -4,7 +4,6 @@ import gr.aueb.mscis.sample.contacts.EmailMessage;
 
 /**
  * Παροχή υπηρεσίας ηλεκτρονικού ταχυδρομείου.
- * @author Νίκος Διαμαντίδης
  *
  */
 public interface EmailProvider {

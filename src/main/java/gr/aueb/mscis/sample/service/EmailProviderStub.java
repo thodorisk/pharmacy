@@ -14,8 +14,7 @@ import gr.aueb.mscis.sample.contacts.EmailMessage;
  * στον κατάλογο. Ο κατάλογος επιστρέφεται με τη 
  * μέθοδο {@code getAllEmails} για την εκτέλεση ανάλογων
  * ισχυρισμός κατά τον έλεγχο.
- *  
- * @author Νίκος Διαμαντίδης
+ *
  */
 public class EmailProviderStub implements EmailProvider{
 

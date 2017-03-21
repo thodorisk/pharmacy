@@ -124,7 +124,7 @@ public class Initializer  {
         comtrexproduct.setOnSale(new OnSale(20.0, new SimpleCalendar(2016,1,1), new SimpleCalendar(2016,12,31)));
 
         //Create Order - Pharmacist: Kaparakou
-        Order firstOrder = new Order(new SimpleCalendar(2016,11,1), OrderState.PENDING, 20.0);
+        Order firstOrder = new Order(new SimpleCalendar(2016,11,1), OrderState.COMPLETED, 20.0);
         LineItem firstlineItem = new LineItem();
         firstlineItem.setProduct(deponproduct);
         firstlineItem.setQuantity(5);
@@ -143,7 +143,7 @@ public class Initializer  {
         
         //Create Two Orders - Pharmacist: Karagiannis
         //First Order - Karagiannis
-        Order KaragiannisfirstOrder = new Order(new SimpleCalendar(2017,1,1), OrderState.PENDING, 10.0);
+        Order KaragiannisfirstOrder = new Order(new SimpleCalendar(2017,1,1), OrderState.COMPLETED, 10.0);
         LineItem KaragiannisfirstlineItem = new LineItem();
         KaragiannisfirstlineItem.setProduct(comtrexproduct);
         KaragiannisfirstlineItem.setQuantity(12);
@@ -161,7 +161,7 @@ public class Initializer  {
         KaragiannisfirstOrder.getLineItems().add(KaragiannissecondlineItem);
         
         //_Second (2) Order - Karagiannis
-        Order KaragiannisfirstOrder_Second = new Order(new SimpleCalendar(2017,2,1), OrderState.PENDING, 50.0);
+        Order KaragiannisfirstOrder_Second = new Order(new SimpleCalendar(2017,2,1), OrderState.COMPLETED, 50.0);
         LineItem KaragiannisfirstlineItem_Second = new LineItem();
         KaragiannisfirstlineItem_Second.setProduct(deponproduct);
         KaragiannisfirstlineItem_Second.setQuantity(12);
@@ -222,91 +222,42 @@ public class Initializer  {
     	//TODO: comment out to perform Delete operation on product with ID:19 -> Panadol
         //cs.deleteProduct(19);
 
-        //-------------------------------------------------------------------------------------------------------
-        //SHOW PRODUCTS
-        System.out.println("\n-----------------");
-        System.out.println("PRODUCTS SEARCHES");
-        System.out.println("-----------------");
-
-        SearchProductService searchProductService = new SearchProductService(cs);
-        searchProductService.searchProductByCategory("Vitamins");
-        searchProductService.searchProductByName("Depon");
-        searchProductService.searchProductByEofn("120");
-
-        //-------------------------------------------------------------------------------------------------------
-        //SHOW ALL PHARMACISTs
-
-        System.out.println("\n--------------------");
-        System.out.println("PHARMACISTS SEARCHES");
-        System.out.println("--------------------");
-
-        SearchPharmacistService searchPharmacistService = new SearchPharmacistService(new PharmacistService(em));
-        searchPharmacistService.searchAllPharmacist();
-
-        //-------------------------------------------------------------------------------------------------------
-        // SHOW ALL ORDERS
-        System.out.println("\n---------------");
-        System.out.println("ORDERS SEARCHES");
-        System.out.println("---------------");
-
-        SearchOrderService searchOrderService = new SearchOrderService(new OrderService(em));
-        //searchOrderService.searchAllOrders();
-        searchOrderService.searchAllOrdersByPharmacist("1234567890",new SimpleCalendar(2016,10,30),new SimpleCalendar(2016,11,11));
-        //searchOrderService.searchAllOrdersByPharmacist("9876543210");
-
-        //-------------------------------------------------------------------------------------------------------
-        // SHOW ALL STATISTICS
-        System.out.println("\n---------------");
-        System.out.println("EARNINGS STATISTICS");
-        System.out.println("---------------");
-        StatisticService ss = new StatisticService(new OrderService(em));
-        System.out.println(ss.earningsByPharmacist("9876543210",new SimpleCalendar(2016,12,30),new SimpleCalendar(2017,1,31)));
-        searchOrderService.searchAllOrdersByPharmacist("9876543210",new SimpleCalendar(2016,12,30),new SimpleCalendar(2017,1,31));
-        System.out.println(ss.totalSales());
-        searchOrderService.searchSalesOfProductPerPeriod("111",new SimpleCalendar(2016,11,2),new SimpleCalendar(2017,2,1));
-        System.out.println(ss.salesPerProductPerPeriod("111",new SimpleCalendar(2016,11,2),new SimpleCalendar(2017,2,1)));
+        
         
         OrderService os = new OrderService(em);
         /////////////////////NEW ORDER KAPARAKOU/////////////////////////////////////
         cs.RemoveOnSale(cs.findProductByEOF("111").get(0));
         cs.RemoveOnSale(cs.findProductByEOF("112").get(0));
-        //cs.UpdateOnSale(cs.findProductByEOF("112").get(0), new OnSale(50.0, new SimpleCalendar(2017,3,1), new SimpleCalendar(2017,4,1)));
-        //cs.UpdateOnSale(cs.findProductByEOF("111").get(0), new OnSale(50.0, new SimpleCalendar(2017,3,1), new SimpleCalendar(2017,4,1)));
 
         int orderid = os.createCartOrder("1234567890");
-        System.out.println(orderid + "	order__id CREATION");
+        
         
         CartItem firstcartitem = os.updateCartItem(orderid, "111", 12, -1);
         CartItem secondcartitem = os.updateCartItem(orderid, "112", 3, -1);
-        //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
-        System.out.println(os.completeOrder(os.showCartByPharmacist("1234567890")) + "	Total");
+
+        os.completeOrder(os.showCartByPharmacist("1234567890"));
         
         /////////////////////NEW ORDER KAPARAKOU/////////////////////////////////////
         int orderid2 = os.createCartOrder("1234567890");
-        System.out.println(orderid2 + "	order__id CREATION");
+        
         
         CartItem firstcartitem2 = os.updateCartItem(orderid2, "111", 5, -1);
         CartItem secondcartitem2 = os.updateCartItem(orderid2, "112", 3, -1);
         //Change quantity to second cartitem
         CartItem updatesecondcartitem2 = os.updateCartItem(orderid2, "112", 5, secondcartitem2.getId());
         os.removeCartItem(firstcartitem2.getId());
-        System.out.println("dad");
-        System.out.println(os.completeOrder(os.showCartByPharmacist("1234567890")) + "	Total");
-        
-        /////Show CART items
-        //for (CartItem cartitem : os.showCartByPharmacist("1234567890"))
-        //System.out.println(cartitem.getEofn() + " " + cartitem.getQuantity() + "	" + cs.findProductByEOF(cartitem.getEofn()).get(0).getName());
+        os.completeOrder(os.showCartByPharmacist("1234567890"));
         
         /////////////////////NEW ORDER KARAGIANNIS/////////////////////////////////////   	
         int orderid3 = os.createCartOrder("9876543210");
-        System.out.println(orderid3 + "	order__id CREATION");
+        
         
         CartItem firstcartitem3 = os.updateCartItem(orderid3, "113", 5, -1);
         
         CartItem updatefirstcartitem3 = os.updateCartItem(orderid3, "113", 2, firstcartitem3.getId());
         
-        System.out.println(os.completeOrder(os.showCartByPharmacist("9876543210")) + "	Total");
-        
+        os.completeOrder(os.showCartByPharmacist("9876543210"));
+        System.out.println("End of code!");
         em.close();
         //JPAUtil.closeEntityManagerFactory();
        

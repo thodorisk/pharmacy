@@ -1,5 +1,6 @@
 package gr.aueb.test.service;
 
+import gr.aueb.mscis.sample.contacts.EmailAddress;
 import gr.aueb.mscis.sample.model.Pharmacist;
 import gr.aueb.mscis.sample.persistence.Initializer;
 import gr.aueb.mscis.sample.persistence.JPAUtil;
@@ -13,9 +14,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by thodoriskaragiannis on 14/03/2017.
- */
+
 public class PharmacistServiceTest {
 
     private Initializer dataHelper;
@@ -37,16 +36,6 @@ public class PharmacistServiceTest {
 
     }
 
-    @Test
-    public void findPharmacistsByEmailTest() {
-        String EXPECTED_NAME = "Tereza";
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        PharmacistService ps = new PharmacistService(em);
-        List<Pharmacist> pharmacists = ps.findPharmacistsByEmail("tkaparakou@aueb.gr");
-        assertNotNull(pharmacists);
-        assertEquals(EXPECTED_NAME, pharmacists.get(0).getFirstName());
-
-    }
 
     @Test
     public void findPharmacistsByAfmTest() {

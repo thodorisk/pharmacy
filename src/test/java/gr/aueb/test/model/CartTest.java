@@ -5,9 +5,6 @@ import gr.aueb.mscis.sample.util.SimpleCalendar;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by thodoriskaragiannis on 16/03/2017.
- */
 public class CartTest {
 
     @Test

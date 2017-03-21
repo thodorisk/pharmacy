@@ -12,15 +12,26 @@ public class AddressTest {
     public void testEqualsObject() {
         Address address1 = new Address();
         Address address2 = new Address();
+        Address address3 = new Address();
+        address3.setCity("Athens");
+        address3.setCountry("Greece");
+        address3.setNumber("27");
+        address3.setStreet("Euelpidon");
+        address3.setZipCode(15458);
+        Address address4 = new Address(address3);
         
         assertFalse(address1.equals(null));
         assertEquals(address1, address2);
         assertEquals(address1.hashCode(), address2.hashCode());
+        assertEquals(address3, address4);
+        assertEquals(address3.hashCode(), address4.hashCode());
         
         address1.setCity("Ellada");
         assertFalse(address1.equals(address2));
         assertFalse(address1.hashCode() == address2.hashCode());
         address2.setCity("Ellada");
+        
+        
         assertEquals(address1, address2);
         assertEquals(address1.hashCode(), address2.hashCode());
     }
