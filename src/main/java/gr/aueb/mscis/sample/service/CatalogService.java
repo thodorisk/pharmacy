@@ -14,7 +14,17 @@ import gr.aueb.mscis.sample.model.CartItem;
 import gr.aueb.mscis.sample.model.Lot;
 import gr.aueb.mscis.sample.model.OnSale;
 import gr.aueb.mscis.sample.model.Product;
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class CatalogService is responsible for the product management
+ */
 public class CatalogService {
 	
 	private EntityManager em;

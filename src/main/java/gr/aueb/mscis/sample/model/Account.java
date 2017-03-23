@@ -8,7 +8,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class Account defines the basic information about the account of a Pharmacist.
+ */
 @Entity
 @Table(name = "accounts")
 public class Account {

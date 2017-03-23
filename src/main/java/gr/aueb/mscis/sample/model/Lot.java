@@ -15,6 +15,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
+
+/**
+ * Class Lot defines a lot number of a product.
+ */
 @Entity
 @Table(name = "lots")
 public class Lot {

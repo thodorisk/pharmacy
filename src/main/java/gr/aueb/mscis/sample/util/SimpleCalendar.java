@@ -5,8 +5,6 @@ import java.util.Calendar;
 /**
  * Αμετάβλητη κλάση για τη διαχείριση ημερομηνιών
  * αγνοώντας την ώρα.
- * @author Νίκος Διαμαντίδης
- *
  */
 public class SimpleCalendar implements  Comparable<SimpleCalendar> {
     private static final long MILLIS_PER_DAY = 86400000;

@@ -9,7 +9,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 import gr.aueb.mscis.sample.model.Product;
 import gr.aueb.mscis.sample.service.CatalogService;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class ProductInfo is a utility class for JAX-RS implementation.
+ */
 
 @XmlRootElement
 public class ProductInfo {
@@ -18,14 +28,19 @@ public class ProductInfo {
 	private String name;
 	private String eofn;
 	private Double price;
-
+	
+	
+	
 	public ProductInfo() {
+	}
 
+	public ProductInfo(Integer id, String name, String eofn, Double price) {
+		this(name, eofn, price);
+		this.id = id;
 	}
 	
-	public ProductInfo(Integer id, String name, String eofn, Double price) {
+	public ProductInfo(String name, String eofn, Double price) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.eofn = eofn;
 		this.price = price;
@@ -101,9 +116,12 @@ public class ProductInfo {
 		product.setPrice(price);
 
 		if (product.getEofn() == null || !product.getEofn().equals(eofn)) {
-			product.setEofn(new String(eofn));
+			product.setEofn(eofn);
 		}
 
 		return product;
 	}
+	
+	
+
 }

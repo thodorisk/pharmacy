@@ -2,6 +2,18 @@ package gr.aueb.mscis.sample.model;
 
 import javax.persistence.*;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
+
+/**
+ * Class CartItem defines an item of a shopping cart.
+ */
+
 @Entity
 @Table(name = "cartitems")
 public class CartItem {

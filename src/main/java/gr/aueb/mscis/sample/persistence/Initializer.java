@@ -5,12 +5,7 @@ import gr.aueb.mscis.sample.model.*;
 import gr.aueb.mscis.sample.service.*;
 import gr.aueb.mscis.sample.util.SimpleCalendar;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.*;
-import gr.aueb.mscis.sample.persistence.JPAUtil;
 
 public class Initializer  {
 	
@@ -123,8 +118,9 @@ public class Initializer  {
         deponproduct.setOnSale(new OnSale(10.0, new SimpleCalendar(2017,1,1), new SimpleCalendar(2017,12,31)));
         comtrexproduct.setOnSale(new OnSale(20.0, new SimpleCalendar(2016,1,1), new SimpleCalendar(2016,12,31)));
 
-        //Create Order - Pharmacist: Kaparakou
+        //Create Order for the account terkap_acc
         Order firstOrder = new Order(new SimpleCalendar(2016,11,1), OrderState.COMPLETED, 20.0);
+        // Create a line item of the order
         LineItem firstlineItem = new LineItem();
         firstlineItem.setProduct(deponproduct);
         firstlineItem.setQuantity(5);
@@ -133,17 +129,17 @@ public class Initializer  {
         firstOrder.getLineItems().add(firstlineItem);
         firstOrder.setAccount(terkap_acc);
         terkap_acc.getOrders().add(firstOrder);
-
+        // Create second line item of the order
         LineItem secondlineItem = new LineItem();
         secondlineItem.setProduct(vitamincproduct);
         secondlineItem.setQuantity(2);
         secondlineItem.setOrder(firstOrder);
         vitamincproduct.getLineItems().add(secondlineItem);
         firstOrder.getLineItems().add(secondlineItem);
-        
-        //Create Two Orders - Pharmacist: Karagiannis
-        //First Order - Karagiannis
+
+        //Create Order1 for the account thokar_acc
         Order KaragiannisfirstOrder = new Order(new SimpleCalendar(2017,1,1), OrderState.COMPLETED, 10.0);
+        // Create first line item of the order
         LineItem KaragiannisfirstlineItem = new LineItem();
         KaragiannisfirstlineItem.setProduct(comtrexproduct);
         KaragiannisfirstlineItem.setQuantity(12);
@@ -152,7 +148,7 @@ public class Initializer  {
         KaragiannisfirstOrder.getLineItems().add(KaragiannisfirstlineItem);
         KaragiannisfirstOrder.setAccount(thokar_acc);
         thokar_acc.getOrders().add(KaragiannisfirstOrder);
-        
+        // Create second line item of the order
         LineItem KaragiannissecondlineItem = new LineItem();
         KaragiannissecondlineItem.setProduct(vitamincproduct);
         KaragiannissecondlineItem.setQuantity(30);
@@ -160,8 +156,9 @@ public class Initializer  {
         vitamincproduct.getLineItems().add(KaragiannissecondlineItem);
         KaragiannisfirstOrder.getLineItems().add(KaragiannissecondlineItem);
         
-        //_Second (2) Order - Karagiannis
+        //Create Order2 for the account thokar_acc
         Order KaragiannisfirstOrder_Second = new Order(new SimpleCalendar(2017,2,1), OrderState.COMPLETED, 50.0);
+        // Create first line item of the order
         LineItem KaragiannisfirstlineItem_Second = new LineItem();
         KaragiannisfirstlineItem_Second.setProduct(deponproduct);
         KaragiannisfirstlineItem_Second.setQuantity(12);
@@ -170,7 +167,7 @@ public class Initializer  {
         KaragiannisfirstOrder_Second.getLineItems().add(KaragiannisfirstlineItem_Second);
         KaragiannisfirstOrder_Second.setAccount(thokar_acc);
         thokar_acc.getOrders().add(KaragiannisfirstOrder_Second);
-        
+        // Create second line item of the order
         LineItem KaragiannissecondlineItem_Second = new LineItem();
         KaragiannissecondlineItem_Second.setProduct(vitamincproduct);
         KaragiannissecondlineItem_Second.setQuantity(55);
@@ -202,64 +199,56 @@ public class Initializer  {
         em.persist(KaragiannisfirstlineItem_Second);
         em.persist(KaragiannissecondlineItem_Second);
 
-        
-        		
         tx.commit();
 
         //-------------------------------------------------------------------------------------------------------
         // ADD another product using CatalogService save functionality
     	CatalogService cs = new CatalogService(em);
-
     	Product productnew = cs.save(new Product("Panadol", "120", 3.00));
-        productnew.setOnSale(new OnSale(30.0,new SimpleCalendar(2017,3,1),new SimpleCalendar(2017,4,1)));
-    	productnew.setCategory(drugscategory1);
+
     	EntityTransaction tx1 = em.getTransaction();
         tx1.begin();
     	em.persist(productnew);
     	tx1.commit();
-
-        //-------------------------------------------------------------------------------------------------------
-    	//TODO: comment out to perform Delete operation on product with ID:19 -> Panadol
-        //cs.deleteProduct(19);
-
-        
         
         OrderService os = new OrderService(em);
-        /////////////////////NEW ORDER KAPARAKOU/////////////////////////////////////
+        // Remove Discount of products with EOF number 111 & 112.
         cs.RemoveOnSale(cs.findProductByEOF("111").get(0));
         cs.RemoveOnSale(cs.findProductByEOF("112").get(0));
 
+        //New Order for the Pharmacist: Kaparakou
         int orderid = os.createCartOrder("1234567890");
         
-        
+        // Add two cart items in the shopping cart
         CartItem firstcartitem = os.updateCartItem(orderid, "111", 12, -1);
         CartItem secondcartitem = os.updateCartItem(orderid, "112", 3, -1);
 
+        // Complete the order
         os.completeOrder(os.showCartByPharmacist("1234567890"));
-        
-        /////////////////////NEW ORDER KAPARAKOU/////////////////////////////////////
+
+        //New Order for the Pharmacist: Kaparakou
         int orderid2 = os.createCartOrder("1234567890");
-        
-        
+
+        // Add two cart items in the shopping cart
         CartItem firstcartitem2 = os.updateCartItem(orderid2, "111", 5, -1);
         CartItem secondcartitem2 = os.updateCartItem(orderid2, "112", 3, -1);
         //Change quantity to second cartitem
         CartItem updatesecondcartitem2 = os.updateCartItem(orderid2, "112", 5, secondcartitem2.getId());
+
+        //Remove first cart item of the shopping cart
         os.removeCartItem(firstcartitem2.getId());
+
+        // Complete the order
         os.completeOrder(os.showCartByPharmacist("1234567890"));
-        
-        /////////////////////NEW ORDER KARAGIANNIS/////////////////////////////////////   	
+
+        //New Order for the Pharmacist: Karagiannis
         int orderid3 = os.createCartOrder("9876543210");
-        
-        
+
         CartItem firstcartitem3 = os.updateCartItem(orderid3, "113", 5, -1);
-        
         CartItem updatefirstcartitem3 = os.updateCartItem(orderid3, "113", 2, firstcartitem3.getId());
         
         os.completeOrder(os.showCartByPharmacist("9876543210"));
-        System.out.println("End of code!");
+
         em.close();
-        //JPAUtil.closeEntityManagerFactory();
-       
     }
 }

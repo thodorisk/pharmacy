@@ -17,26 +17,23 @@ import gr.aueb.mscis.sample.model.Pharmacist;
 import gr.aueb.mscis.sample.persistence.JPAUtil;
 
 /**
- * Υπηρεσία ενημέρωσης ελαττωματικής παρτίδας.
- * Η υπηρεσία που ενημερώνει με μήνυμα ηλεκτρονικού
- * ταχυδρομείου όσους φαρμακοποιούς έχουν λάβει
- * ελαττωματική παρτίδα
+ * Notification service of defective lot.
  */
 public class NotificationService {
     private EmailProvider provider;
     
     
     /**
-     * Θέτει τον πάροχο του ηλεκτρονικού ταχυδρομείου.
-     * @param provider Ο πάροχος ηλεκτρονικού ταχυδρομείου.
+     * Sets the mail provider
+     * @param provider Mail provider.
      */
     public void setProvider(EmailProvider provider) {
         this.provider = provider;
     }
 
     /**
-     * Ενημερώνει όσους φαρμακοποιούς.
-     * έχουν λάβει ελαττωματική παρτίδα.
+     * Informs pharmacists that
+     * they have received defective lot
      */
     @SuppressWarnings("unchecked")
 	public void notifyPharmacists(int lotNumber) {

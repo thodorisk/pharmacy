@@ -10,7 +10,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class Order defines the basic information about an Order.
+ */
 @Entity
 @Table(name = "orders")
 public class Order {

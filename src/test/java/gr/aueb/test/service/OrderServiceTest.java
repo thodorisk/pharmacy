@@ -36,8 +36,6 @@ public class OrderServiceTest {
     int orderid = os.createCartOrder("1234567890");
     os.updateCartItem(orderid, "111", 2, -1);
     os.updateCartItem(orderid, "112", 3, -1);
-    //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
-    //System.out.println(os.completeOrder(os.showCartByPharmacist("1234567890")) + "	Total");
     assertEquals(EXPECTED_CART_SIZE, os.showCartByPharmacist("1234567890").size());
     }
     
@@ -48,9 +46,6 @@ public class OrderServiceTest {
     OrderService os = new OrderService(em);
     int orderid = os.createCartOrder("1234567890");
     os.updateCartItem(orderid, "111", 2, -1);
-    //os.updateCartItem(orderid, "112", 3, -1);
-    //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
-    //System.out.println(os.completeOrder(os.showCartByPharmacist("1234567890")) + "	Total");
     assertEquals(EXPECTED_QUANTITY, os.showCartByPharmacist("1234567890").get(0).getQuantity());
     }
     
@@ -62,9 +57,6 @@ public class OrderServiceTest {
     int orderid = os.createCartOrder("1234567890");
     CartItem cartitem = os.updateCartItem(orderid, "111", 2, -1);
     os.updateCartItem(orderid, "111", 6, cartitem.getId());
-    //os.updateCartItem(orderid, "112", 3, -1);
-    //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
-    //System.out.println(os.completeOrder(os.showCartByPharmacist("1234567890")) + "	Total");
     assertEquals(EXPECTED_QUANTITY, os.showCartByPharmacist("1234567890").get(0).getQuantity());
     }
        
@@ -76,7 +68,6 @@ public class OrderServiceTest {
     int orderid = os.createCartOrder("1234567890");
     os.updateCartItem(orderid, "111", 2, -1);
     os.updateCartItem(orderid, "112", 3, -1);
-    //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
     double total =  os.completeOrder(os.showCartByPharmacist("1234567890"));
     assertEquals(EXPECTED_ORDER_TOTAL, total, 1e-2);
     }
@@ -93,8 +84,6 @@ public class OrderServiceTest {
     OrderService os = new OrderService(em);
     int orderid = os.createCartOrder("1234567890");
     os.updateCartItem(orderid, "111", 2, -1);
-   //os.updateCartItem(orderid, "112", 3, -1);
-    //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
     double total =  os.completeOrder(os.showCartByPharmacist("1234567890"));
     assertEquals(EXPECTED_ORDER_TOTAL, total, 1e-2);
     }
@@ -111,8 +100,6 @@ public class OrderServiceTest {
     OrderService os = new OrderService(em);
     int orderid = os.createCartOrder("1234567890");
     os.updateCartItem(orderid, "111", 2, -1);
-   //os.updateCartItem(orderid, "112", 3, -1);
-    //CartItem updatefirstcartitem = os.updateCartItem(orderid, "111", 1, firstcartitem.getId());
     double total =  os.completeOrder(os.showCartByPharmacist("1234567890"));
     assertEquals(EXPECTED_ORDER_TOTAL, total, 1e-2);
     }

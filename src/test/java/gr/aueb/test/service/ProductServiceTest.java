@@ -15,7 +15,6 @@ import gr.aueb.mscis.sample.util.SimpleCalendar;
 import org.junit.Before;
 import org.junit.Test;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
@@ -124,18 +123,6 @@ public class ProductServiceTest {
 		assertEquals(EXPECTED_PRODUCTS_SIZE, cs.findAllProducts().size());
         
     }
-
-    @Test
-    public void saveProductTest(){
-        int EXPECTED_QUANTITY_OF_PRODUCTS = 5;
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        CatalogService cs = new CatalogService(em);
-        Product amoxilproduct = new Product("Amoxil", "000", 8.70);
-        cs.save(amoxilproduct);
-        List<Product> products = cs.findAllProducts();
-
-        assertEquals(EXPECTED_QUANTITY_OF_PRODUCTS, products.size());
-    }
     
     @Test
     public void findProductbyIdTest() {
@@ -175,26 +162,6 @@ public class ProductServiceTest {
         cs.save(newproduct);
         cs.UpdateOnSale(newproduct, new OnSale(20.0,new SimpleCalendar(2017,1,1),new SimpleCalendar(2017,1,10)));
 		assertEquals(EXPECTED_PRODUCT_ONSALE, newproduct.getOnSale().getDiscount(), 1e-2);
-    }
-
-    @Test
-    public void addLotTest(){
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Product product1 = new Product("Aspirin","999", 3.0);
-        Lot lot1 = new Lot(987654, 88);
-        CatalogService cs = new CatalogService(em);
-        cs.addLot(product1, lot1);
-        assertEquals(lot1.getLotno(), new ArrayList<Lot>(product1.getLots()).get(0).getLotno());
-    }
-
-    @Test
-    public void getStockTest(){
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-        Product product1 = new Product("Aspirin","999", 3.0);
-        Lot lot1 = new Lot(987654, 88);
-        CatalogService cs = new CatalogService(em);
-        cs.addLot(product1, lot1);
-        assertEquals(lot1.getQuantity(), new ArrayList<Lot>(product1.getLots()).get(0).getQuantity());
     }
     
 }

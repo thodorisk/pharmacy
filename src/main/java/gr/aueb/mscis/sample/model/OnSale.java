@@ -5,7 +5,17 @@ import javax.persistence.*;
 import gr.aueb.mscis.sample.util.SimpleCalendar;
 
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class OnSale defines the basic discount information of a product.
+ */
 @Entity
 @Table(name = "onsales")
 public class OnSale {

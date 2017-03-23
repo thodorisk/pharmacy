@@ -2,16 +2,37 @@ package gr.aueb.mscis.sample.service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 
 import gr.aueb.mscis.sample.contacts.EmailAddress;
 import gr.aueb.mscis.sample.model.Pharmacist;
+import gr.aueb.mscis.sample.model.Product;
 
+/**
+ * PharmacistService is responsible for the pharmacist management
+ */
 public class PharmacistService {
 
 	private EntityManager em;
 
 	public PharmacistService(EntityManager em) {
 		this.em = em;
+	}
+	
+	
+	public Pharmacist findPharmacistById(int id) {
+
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Pharmacist pharmacist = null;
+		try {
+			pharmacist = em.find(Pharmacist.class, id);
+			tx.commit();
+		} catch (NoResultException ex) {
+			tx.rollback();
+		}
+		return pharmacist;
 	}
 	
 	@SuppressWarnings("unchecked")

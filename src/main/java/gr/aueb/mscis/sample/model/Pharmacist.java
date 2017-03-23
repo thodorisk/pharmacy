@@ -8,7 +8,17 @@ import javax.persistence.*;
 import gr.aueb.mscis.sample.contacts.Address;
 import gr.aueb.mscis.sample.contacts.EmailAddress;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class Pharmacist defines the basic information about a Pharmacist.
+ */
 @Entity
 @Table(name="pharmacists")
 public class Pharmacist  {

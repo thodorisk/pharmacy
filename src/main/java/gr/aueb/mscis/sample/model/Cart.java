@@ -7,6 +7,17 @@ import javax.persistence.*;
 import gr.aueb.mscis.sample.util.SimpleCalendar;
 import gr.aueb.mscis.sample.util.SystemDate;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
+
+/**
+ * Class Cart defines the shopping cart.
+ */
 
 @Entity
 @Table(name = "cart")

@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+/**
+ * Order service is responsible for the order management.
+ */
 public class OrderService {
 
 	private EntityManager em;
@@ -77,7 +79,7 @@ public class OrderService {
 		CatalogService cs = new CatalogService(em);
 		List<LineItem> tempresults = new ArrayList<LineItem>(cs.findProductByEOF(eof).get(0).getLineItems());
 		for (LineItem li : tempresults) {
-			//if (order.getOrderdate().after(startDate))
+
 			if (li.getOrder().getOrderdate().equals(startDate) || li.getOrder().getOrderdate().equals(endDate)) {
 				results.add(li);
 			}

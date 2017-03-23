@@ -6,6 +6,17 @@ import javax.persistence.Embeddable;
 
 import gr.aueb.mscis.sample.contacts.EmailAddress;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
+
+/**
+ * Class Person is embeddable in the class Pharmacist and defines information about a Pharmacist.
+ */
 @Embeddable
 public class Person {
     @Column(name="firstname")

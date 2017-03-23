@@ -4,9 +4,7 @@ import gr.aueb.mscis.sample.model.CartItem;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by thodoriskaragiannis on 16/03/2017.
- */
+
 public class CartItemTest {
 
     @Test

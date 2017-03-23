@@ -8,6 +8,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
+
+/**
+ * Class Category defines the category of a product.
+ */
 @Entity
 @Table(name = "categories")
 public class Category {

@@ -5,7 +5,17 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author      Thodoris Karagiannis
+ * @author      Dionisis Koropoulis
+ * @author      Tereza Kaparakou
+ * @version     3.0 (current version)
+ *
+ */
 
+/**
+ * Class LineItem defines a line of an order.
+ */
 @Entity
 @Table(name = "lines")
 public class LineItem {

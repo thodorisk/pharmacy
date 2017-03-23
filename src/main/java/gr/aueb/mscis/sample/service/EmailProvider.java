@@ -3,13 +3,13 @@ package gr.aueb.mscis.sample.service;
 import gr.aueb.mscis.sample.contacts.EmailMessage;
 
 /**
- * Παροχή υπηρεσίας ηλεκτρονικού ταχυδρομείου.
+ * Email provider.
  *
  */
 public interface EmailProvider {
     /**
-     * Αποστέλλει μήνυμα ηλεκτρονικού ταχυδρομείου.
-     * @param message Το μήνυμα ηλεκτρονικού ταχυδρομείου.
+     * Send email.
+     * @param message Email message.
      */
     void sendEmail(EmailMessage message);
 }
